@@ -7,25 +7,70 @@ app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
 
 app.get("/restaurants", async (req, res) => {
-  const body = await pool.query("SELECT * FROM restaurants");
-  console.log(body.rows);
-  res.send("got restaurants");
+  try {
+    const restaurants = await pool.query("SELECT * FROM restaurants");
+    res.json({
+      length: restaurants.rows.length,
+      data: restaurants.rows,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 });
 
-app.get("/restaurants/:id", (req, res) => {
-  res.send("this is a get response");
+app.get("/restaurants/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const restaurant = await pool.query(
+      "SELECT * FROM restaurants WHERE id = $1",
+      [id]
+    );
+    res.json(restaurant.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
-app.post("/restaurants", (req, res) => {
-  res.send("this is a post response");
+app.post("/restaurants", async (req, res) => {
+  try {
+    const { name, location, price_range } = req.body;
+    const restaurant = await pool.query(
+      "INSERT INTO restaurants (name, location, price_range) VALUES ($1, $2, $3) RETURNING *",
+      [name, location, price_range]
+    );
+    res.json(restaurant.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
-app.put("/restaurants/:id", (req, res) => {
-  res.send("this is a put response");
+app.put("/restaurants/:id", async (req, res) => {
+  try {
+    const { name, location, price_range } = req.body;
+    const { id } = req.params;
+
+    const restaurant = await pool.query(
+      "UPDATE restaurants SET name = $1, location = $2, price_range = $3 WHERE id = $4 RETURNING *",
+      [name, location, price_range, id]
+    );
+    res.json(restaurant.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
-app.delete("/restaurants/:id", (req, res) => {
-  console.log("this is a delete response");
+app.delete("/restaurants/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await pool.query(
+      "DELETE FROM restaurants WHERE id = $1 RETURNING *",
+      [id]
+    );
+    res.json(restaurant.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 const PORT = process.env.PORT || 3000;
