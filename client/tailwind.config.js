@@ -1,8 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js}"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    fontFamily: {
+      inter: ["Inter", "sans-serif"],
+    },
+    extend: {
+      colors: {
+        "yelp-red": "#FF1A1A",
+      },
+    },
+  },
+  daisyui: {
+    themes: [],
   },
   plugins: [require("daisyui")],
 };
