@@ -1,7 +1,7 @@
 function AddRestaurant() {
   return (
     <>
-      <form className="space-x-12 my-6">
+      <form className="flex justify-center space-x-12 py-6">
         <input
           type="text"
           placeholder="Restaurant Name"

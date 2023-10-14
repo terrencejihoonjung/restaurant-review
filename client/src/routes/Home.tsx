@@ -5,10 +5,12 @@ import RestaurantList from "../components/RestaurantList";
 function Home() {
   return (
     <>
-      <div className="text-center mt-12 mb-6">
+      <div className="flex flex-col items-center pt-12">
         <Header />
-        <AddRestaurant />
-        <RestaurantList />
+        <div className="w-3/4">
+          <AddRestaurant />
+          <RestaurantList />
+        </div>
       </div>
     </>
   );

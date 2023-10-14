@@ -7,11 +7,14 @@ import Home from "./routes/Home";
 // import RestaurantDetail from "./routes/RestaurantDetail";
 // import UpdateRestaurant from "./routes/UpdateRestaurant";
 import NoMatch from "./routes/NoMatch";
+import NavBar from "./components/NavBar";
 
 function App() {
   // const [restaurants, setRestaurants] = useState([]);
   return (
-    <>
+    <div className="container min-w-full min-h-full">
+      <NavBar />
+
       <Routes>
         <Route index element={<Home />} />
 
@@ -22,7 +25,7 @@ function App() {
 
         <Route path="*" element={<NoMatch />} />
       </Routes>
-    </>
+    </div>
   );
 }
 
