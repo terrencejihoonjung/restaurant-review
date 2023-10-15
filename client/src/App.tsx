@@ -1,30 +1,33 @@
 // Tool Imports
-// import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { RestaurantsContext, Restaurant } from "./context/RestaurantsContext";
 
 // Component Imports
 import Home from "./routes/Home";
-// import RestaurantDetail from "./routes/RestaurantDetail";
-// import UpdateRestaurant from "./routes/UpdateRestaurant";
 import NoMatch from "./routes/NoMatch";
 import NavBar from "./components/NavBar";
+// import RestaurantDetail from "./routes/RestaurantDetail";
+// import UpdateRestaurant from "./routes/UpdateRestaurant";
 
 function App() {
-  // const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+
   return (
     <div className="container min-w-full min-h-full">
       <NavBar />
+      <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
+        <Routes>
+          <Route index element={<Home />} />
 
-      <Routes>
-        <Route index element={<Home />} />
-
-        <Route path="/restaurants" element={<Home />} />
-        {/* <Route path="/restaurants/:id" element={<RestaurantDetail />}>
+          <Route path="/restaurants" element={<Home />} />
+          {/* <Route path="/restaurants/:id" element={<RestaurantDetail />}>
           <Route path="/update" element={<UpdateRestaurant />} />
         </Route> */}
 
-        <Route path="*" element={<NoMatch />} />
-      </Routes>
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </RestaurantsContext.Provider>
     </div>
   );
 }

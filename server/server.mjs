@@ -1,10 +1,12 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 import pool from "./db/index.mjs";
 const app = express();
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
+app.use(cors());
 
 app.get("/restaurants", async (req, res) => {
   try {

@@ -1,15 +1,20 @@
-import { useState, createContext } from "react";
+import { useContext, createContext } from "react";
 
-const RestaurantsContext = createContext();
+export type Restaurant = {
+  readonly id: number;
+  name: string;
+  location: string;
+  price_range: number;
+};
 
-function RestaurantContextProvider(props: React.ComponentType) {
-  const [restaurants, setRestaurants] = useState([]);
+export type RestaurantProps = {
+  restaurants: Restaurant[];
+  setRestaurants: (restaurants: Restaurant[]) => void;
+};
 
-  return (
-    <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
-      {props.children}
-    </RestaurantsContext.Provider>
-  );
-}
+export const RestaurantsContext = createContext<RestaurantProps>({
+  restaurants: [],
+  setRestaurants: () => [],
+});
 
-export default RestaurantContextProvider;
+export const useRestaurantsContext = () => useContext(RestaurantsContext);
