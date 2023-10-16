@@ -1,18 +1,17 @@
 import { useState } from "react";
-// import { useRestaurantsContext } from "../context/RestaurantsContext";
+import { useRestaurantsContext } from "../context/RestaurantsContext";
 
 function AddRestaurant() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState("Price Range");
 
-  // const { restaurants, setRestaurants } = useRestaurantsContext();
+  const { restaurants, setRestaurants } = useRestaurantsContext();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       const body = { name, location, price_range: priceRange };
-      console.log(body);
       const response = await fetch("http://localhost:3000/restaurants", {
         method: "POST",
         headers: {
@@ -20,7 +19,8 @@ function AddRestaurant() {
         },
         body: JSON.stringify(body),
       });
-      console.log(response);
+      const jsonData = await response.json();
+      setRestaurants([...restaurants, jsonData]);
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);

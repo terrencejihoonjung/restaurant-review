@@ -18,6 +18,21 @@ function RestaurantList() {
     }
   }
 
+  async function deleteRestaurant(id: number) {
+    try {
+      const response = await fetch(`http://localhost:3000/restaurants/${id}`, {
+        method: "DELETE",
+      });
+      setRestaurants(restaurants.filter((restaurant) => restaurant.id !== id));
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err);
+      } else {
+        console.error(err);
+      }
+    }
+  }
+
   useEffect(() => {
     getRestaurants();
   }, []);
@@ -52,7 +67,10 @@ function RestaurantList() {
                       </button>
                     </td>
                     <td>
-                      <button className="btn btn-outline btn-error">
+                      <button
+                        onClick={() => deleteRestaurant(restaurant.id)}
+                        className="btn btn-outline btn-error"
+                      >
                         Delete
                       </button>
                     </td>
