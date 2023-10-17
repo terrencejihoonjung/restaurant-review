@@ -1,8 +1,10 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRestaurantsContext } from "../context/RestaurantsContext";
 
 function RestaurantList() {
   const { restaurants, setRestaurants } = useRestaurantsContext();
+  const navigate = useNavigate();
 
   async function getRestaurants() {
     try {
@@ -18,9 +20,21 @@ function RestaurantList() {
     }
   }
 
-  async function deleteRestaurant(id: number) {
+  async function navigateToUpdate(
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) {
+    e.stopPropagation();
+    navigate(`/restaurants/${id}/update`);
+  }
+
+  async function deleteRestaurant(
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) {
+    e.stopPropagation();
     try {
-      const response = await fetch(`http://localhost:3000/restaurants/${id}`, {
+      await fetch(`http://localhost:3000/restaurants/${id}`, {
         method: "DELETE",
       });
       setRestaurants(restaurants.filter((restaurant) => restaurant.id !== id));
@@ -56,19 +70,26 @@ function RestaurantList() {
             {restaurants &&
               restaurants.map((restaurant) => {
                 return (
-                  <tr key={restaurant.id} className="hover">
+                  <tr
+                    key={restaurant.id}
+                    className="hover"
+                    onClick={() => navigate(`/restaurants/${restaurant.id}`)}
+                  >
                     <td>{restaurant.name}</td>
                     <td>{restaurant.location}</td>
                     <td>{"$".repeat(restaurant.price_range)}</td>
                     <th>reviews</th>
                     <td>
-                      <button className="btn btn-outline btn-warning">
+                      <button
+                        onClick={(e) => navigateToUpdate(e, restaurant.id)}
+                        className="btn btn-outline btn-warning"
+                      >
                         Edit
                       </button>
                     </td>
                     <td>
                       <button
-                        onClick={() => deleteRestaurant(restaurant.id)}
+                        onClick={(e) => deleteRestaurant(e, restaurant.id)}
                         className="btn btn-outline btn-error"
                       >
                         Delete

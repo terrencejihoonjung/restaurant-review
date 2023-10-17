@@ -7,8 +7,8 @@ import { RestaurantsContext, Restaurant } from "./context/RestaurantsContext";
 import Home from "./routes/Home";
 import NoMatch from "./routes/NoMatch";
 import NavBar from "./components/NavBar";
-// import RestaurantDetail from "./routes/RestaurantDetail";
-// import UpdateRestaurant from "./routes/UpdateRestaurant";
+import RestaurantDetail from "./routes/RestaurantDetail";
+import UpdateRestaurant from "./routes/UpdateRestaurant";
 
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -21,9 +21,11 @@ function App() {
           <Route index element={<Home />} />
 
           <Route path="/restaurants" element={<Home />} />
-          {/* <Route path="/restaurants/:id" element={<RestaurantDetail />}>
-          <Route path="/update" element={<UpdateRestaurant />} />
-        </Route> */}
+          <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+          <Route
+            path="/restaurants/:id/update"
+            element={<UpdateRestaurant />}
+          />
 
           <Route path="*" element={<NoMatch />} />
         </Routes>

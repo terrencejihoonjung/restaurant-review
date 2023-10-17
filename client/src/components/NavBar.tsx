@@ -4,9 +4,12 @@ function NavBar() {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl bg-gradient-to-r from-fuchsia-500 to-yelp-red text-transparent bg-clip-text">
+        <Link
+          to="/restaurants"
+          className="btn btn-ghost normal-case text-xl bg-gradient-to-r from-fuchsia-500 to-yelp-red text-transparent bg-clip-text"
+        >
           RR
-        </a>
+        </Link>
       </div>
       <div className="flex-none">
         <Link
