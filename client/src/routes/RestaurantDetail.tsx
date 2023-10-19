@@ -66,6 +66,12 @@ function RestaurantDetail() {
       <div>
         {selectedRestaurant.name && (
           <>
+            <select className="mx-24 select select-ghost w-fit max-w-xs">
+              <option>Date Submitted</option>
+              <option>Highest</option>
+              <option>Lowest</option>
+              <option>Number of Ratings</option>
+            </select>
             <div>
               <Reviews reviews={reviews} />
             </div>
