@@ -57,19 +57,25 @@ function AddRestaurant() {
         <input
           type="text"
           placeholder="Restaurant Name"
-          className="input input-bordered w-full max-w-xs"
+          className={`input input-bordered w-full max-w-xs + ${
+            error && !name ? "input-error" : ""
+          }`}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           type="text"
           placeholder="Location"
-          className="input input-bordered w-full max-w-xs"
+          className={`input input-bordered w-full max-w-xs + ${
+            error && !location ? "input-error" : ""
+          }`}
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
         <select
-          className="select select-bordered w-full max-w-xs"
+          className={`input input-bordered w-full max-w-xs + ${
+            error && priceRange === "Price Range" ? "input-error" : ""
+          }`}
           value={priceRange}
           onChange={(e) => setPriceRange(e.target.value)}
         >
