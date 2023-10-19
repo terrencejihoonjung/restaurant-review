@@ -27,7 +27,16 @@ app.get("/restaurants/:id", async (req, res) => {
       "SELECT * FROM restaurants WHERE id = $1",
       [id]
     );
-    res.json(restaurant.rows[0]);
+    const reviews = await pool.query(
+      "SELECT * FROM reviews WHERE restaurant_id = $1",
+      [id]
+    );
+    res.json({
+      data: {
+        restaurant: restaurant.rows[0],
+        reviews: reviews.rows,
+      },
+    });
   } catch (err) {
     console.error(err);
   }
