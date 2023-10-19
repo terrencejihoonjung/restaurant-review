@@ -1,13 +1,44 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
-function AddReview() {
+type Review = {
+  name: string;
+  rating: number;
+  review: string;
+  readonly id: number;
+  readonly restaurant_id: number;
+};
+
+type AddReviewProps = {
+  reviews: Review[];
+  setReviews: (reviews: Review[]) => void;
+};
+
+function AddReview({ reviews, setReviews }: AddReviewProps) {
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [rating, setRating] = useState("");
   const [review, setReview] = useState("");
 
-  async function handleReviewSubmit() {
+  const starStyles: string = `mask mask-star-2 bg-orange-400 ${
+    rating === "" ? "opacity-20" : ""
+  }`;
+
+  async function handleReviewSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     try {
       const reviewBody = { name, rating, review };
+      const response = await fetch(
+        `http://localhost:3000/restaurants/${id}/reviews`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reviewBody),
+        }
+      );
+      const jsonData = await response.json();
+      setReviews([...reviews, jsonData]);
+      window.location.reload();
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);
@@ -27,7 +58,7 @@ function AddReview() {
             name="rating-2"
             value={1}
             onChange={(e) => setRating(e.target.value)}
-            className="mask mask-star-2 bg-orange-400"
+            className={starStyles}
             checked={rating === "1" && rating.length > 0}
           />
           <input
@@ -35,7 +66,7 @@ function AddReview() {
             name="rating-2"
             value={2}
             onChange={(e) => setRating(e.target.value)}
-            className="mask mask-star-2 bg-orange-400"
+            className={starStyles}
             checked={rating === "2" && rating.length > 0}
           />
           <input
@@ -43,7 +74,7 @@ function AddReview() {
             name="rating-2"
             value={3}
             onChange={(e) => setRating(e.target.value)}
-            className="mask mask-star-2 bg-orange-400"
+            className={starStyles}
             checked={rating === "3" && rating.length > 0}
           />
           <input
@@ -51,7 +82,7 @@ function AddReview() {
             name="rating-2"
             value={4}
             onChange={(e) => setRating(e.target.value)}
-            className="mask mask-star-2 bg-orange-400"
+            className={starStyles}
             checked={rating === "4" && rating.length > 0}
           />
           <input
@@ -59,7 +90,7 @@ function AddReview() {
             name="rating-2"
             value={5}
             onChange={(e) => setRating(e.target.value)}
-            className="mask mask-star-2 bg-orange-400"
+            className={starStyles}
             checked={rating === "5" && rating.length > 0}
           />
         </div>

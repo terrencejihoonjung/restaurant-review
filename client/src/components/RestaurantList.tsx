@@ -1,10 +1,23 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRestaurantsContext } from "../context/RestaurantsContext";
+import StarRating from "./StarRating";
 
 function RestaurantList() {
   const { restaurants, setRestaurants } = useRestaurantsContext();
   const navigate = useNavigate();
+
+  function renderRating(avg_rating: number, review_count: number) {
+    if (!review_count) {
+      return <p className="font-inter ml-1">0 Reviews</p>;
+    }
+    return (
+      <span className="flex items-center">
+        <StarRating rating={avg_rating > 0 ? avg_rating : 0} />
+        <p className="font-inter ml-1">({review_count})</p>
+      </span>
+    );
+  }
 
   async function getRestaurants() {
     try {
@@ -78,7 +91,12 @@ function RestaurantList() {
                     <td>{restaurant.name}</td>
                     <td>{restaurant.location}</td>
                     <td>{"$".repeat(restaurant.price_range)}</td>
-                    <th>reviews</th>
+                    <th>
+                      {renderRating(
+                        restaurant.avg_rating,
+                        restaurant.review_count
+                      )}
+                    </th>
                     <td>
                       <button
                         onClick={(e) => navigateToUpdate(e, restaurant.id)}

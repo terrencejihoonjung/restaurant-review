@@ -8,9 +8,9 @@ function StarRating({ rating }: StarRatingProps) {
   const stars = [];
   for (let i: number = 1; i <= 5; i++) {
     if (i <= rating) {
-      stars.push(<FaStar key={i} className="text-warning" />);
+      stars.push(<FaStar key={i} className="text-orange-400" />);
     } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
-      stars.push(<FaStarHalfAlt key={i} className="text-warning" />);
+      stars.push(<FaStarHalfAlt key={i} className="text-orange-400" />);
     } else {
       stars.push(<FaRegStar key={i} />);
     }

@@ -15,9 +15,9 @@ function UpdateRestaurant() {
         method: "GET",
       });
       const jsonData = await response.json();
-      setName(jsonData.name);
-      setLocation(jsonData.location);
-      setPriceRange(jsonData.price_range);
+      setName(jsonData.data.restaurant.name);
+      setLocation(jsonData.data.restaurant.location);
+      setPriceRange(jsonData.data.restaurant.price_range);
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);

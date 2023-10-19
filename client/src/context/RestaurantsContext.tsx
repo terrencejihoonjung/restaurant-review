@@ -5,6 +5,9 @@ export type Restaurant = {
   name: string;
   location: string;
   price_range: number;
+  restaurant_id: number;
+  review_count: number;
+  avg_rating: number;
 };
 
 export type RestaurantProps = {

@@ -10,7 +10,9 @@ app.use(cors());
 
 app.get("/restaurants", async (req, res) => {
   try {
-    const restaurants = await pool.query("SELECT * FROM restaurants");
+    const restaurants = await pool.query(
+      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON restaurant_id = reviews.restaurant_id"
+    );
     res.json({
       length: restaurants.rows.length,
       data: restaurants.rows,
@@ -24,7 +26,7 @@ app.get("/restaurants/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const restaurant = await pool.query(
-      "SELECT * FROM restaurants WHERE id = $1",
+      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON restaurant_id = reviews.restaurant_id WHERE id = $1",
       [id]
     );
     const reviews = await pool.query(
@@ -74,11 +76,29 @@ app.delete("/restaurants/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
+    await pool.query("DELETE FROM reviews WHERE reviews.restaurant_id = $1", [
+      id,
+    ]);
+
     const restaurant = await pool.query(
       "DELETE FROM restaurants WHERE id = $1 RETURNING *",
       [id]
     );
     res.json(restaurant.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.post("/restaurants/:id/reviews", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, review, rating } = req.body;
+    const addedReview = await pool.query(
+      "INSERT INTO reviews (restaurant_id, name, review, rating) VALUES ($1, $2, $3, $4) RETURNING *",
+      [id, name, review, rating]
+    );
+    res.json(addedReview.rows[0]);
   } catch (err) {
     console.error(err);
   }

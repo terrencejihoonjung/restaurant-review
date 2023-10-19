@@ -13,7 +13,7 @@ type ReviewProps = {
 
 function Reviews({ reviews }: ReviewProps) {
   return (
-    <div className="grid grid-cols-4 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-screen">
+    <div className="grid grid-cols-4 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-scren">
       {reviews.map((review) => (
         <div key={review.id} className="card w-full h-56 bg-base-100 shadow-xl">
           <div className="card-body">

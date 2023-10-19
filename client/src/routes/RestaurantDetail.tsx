@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Restaurant } from "../context/RestaurantsContext";
 import StarRating from "../components/StarRating";
 import AddReview from "../components/AddReview";
@@ -43,11 +43,26 @@ function RestaurantDetail() {
 
   return (
     <>
-      <h1 className="w-fit font-inter font-black text-4xl px-24 mt-6 bg-gradient-to-r from-fuchsia-500 to-yelp-red text-transparent bg-clip-text">
+      <Link
+        to="/restaurants"
+        className="px-24 font-inter font-black text-sm breadcrumbs"
+      >
+        {"< Back"}
+      </Link>
+      <h1 className="w-fit font-inter font-black text-4xl px-24 mt-3 bg-gradient-to-r from-fuchsia-500 to-yelp-red text-transparent bg-clip-text">
         {selectedRestaurant.name}
       </h1>
-      <StarRating rating={1} />
-      <AddReview />
+      <div className="flex items-center px-24 text-2xl">
+        <StarRating rating={selectedRestaurant.avg_rating} />
+        {selectedRestaurant.review_count ? (
+          <span className="font-inter font-black ml-2">
+            ({selectedRestaurant.review_count})
+          </span>
+        ) : (
+          <span className="font-inter font-black ml-2">(0)</span>
+        )}
+      </div>
+      <AddReview reviews={reviews} setReviews={setReviews} />
       <div>
         {selectedRestaurant.name && (
           <>

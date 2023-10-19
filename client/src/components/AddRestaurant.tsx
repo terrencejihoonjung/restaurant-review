@@ -11,7 +11,11 @@ function AddRestaurant() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const body = { name, location, price_range: priceRange };
+      const body = {
+        name,
+        location,
+        price_range: priceRange,
+      };
       const response = await fetch("http://localhost:3000/restaurants", {
         method: "POST",
         headers: {
