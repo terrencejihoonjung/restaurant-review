@@ -19,6 +19,21 @@ function RestaurantDetail() {
     {} as Restaurant
   );
   const [reviews, setReviews] = useState<Review[]>([] as Review[]);
+  const [sortKeyword, setSortKeyword] = useState("recent");
+  const sortedReviews = sortReviews();
+
+  function sortReviews(): Review[] {
+    if (sortKeyword === "recent") {
+      return reviews;
+    }
+
+    const copyRevews = [...reviews];
+    return copyRevews.sort((a, b) => {
+      return sortKeyword === "highest"
+        ? b.rating - a.rating
+        : a.rating - b.rating;
+    });
+  }
 
   async function getRestaurant() {
     try {
@@ -66,14 +81,16 @@ function RestaurantDetail() {
       <div>
         {selectedRestaurant.name && (
           <>
-            <select className="mx-24 select select-ghost w-fit max-w-xs">
-              <option>Date Submitted</option>
-              <option>Highest</option>
-              <option>Lowest</option>
-              <option>Number of Ratings</option>
+            <select
+              onChange={(e) => setSortKeyword(e.target.value)}
+              className="mx-24 select select-ghost w-fit max-w-xs"
+            >
+              <option value="recent">Most Recent</option>
+              <option value="highest">Highest</option>
+              <option value="lowest">Lowest</option>
             </select>
             <div>
-              <Reviews reviews={reviews} />
+              <Reviews sortedReviews={sortedReviews} />
             </div>
           </>
         )}

@@ -8,14 +8,14 @@ type Review = {
 };
 
 type ReviewProps = {
-  reviews: Review[];
+  sortedReviews: Review[];
 };
 
-function Reviews({ reviews }: ReviewProps) {
+function Reviews({ sortedReviews }: ReviewProps) {
   return (
     <>
       <div className="grid grid-cols-4 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-scren">
-        {reviews.map((review) => (
+        {sortedReviews.map((review) => (
           <div
             key={review.id}
             className="card w-full h-56 bg-base-100 shadow-xl"
