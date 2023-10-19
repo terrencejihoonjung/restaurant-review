@@ -5,17 +5,30 @@ function AddRestaurant() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState("Price Range");
+  const [error, setError] = useState("");
 
   const { restaurants, setRestaurants } = useRestaurantsContext();
+
+  function resetFields() {
+    setName("");
+    setLocation("");
+    setPriceRange("Price Range");
+    setError("");
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      if (name === "" || location === "" || priceRange === "Price Range") {
+        throw new Error("Please fill in empty fields");
+      }
+
       const body = {
         name,
         location,
         price_range: priceRange,
       };
+
       const response = await fetch("http://localhost:3000/restaurants", {
         method: "POST",
         headers: {
@@ -25,9 +38,10 @@ function AddRestaurant() {
       });
       const jsonData = await response.json();
       setRestaurants([...restaurants, jsonData]);
+      resetFields();
     } catch (err) {
       if (err instanceof Error) {
-        console.error(err);
+        setError(err.message);
       } else {
         console.error(err);
       }
@@ -71,6 +85,24 @@ function AddRestaurant() {
           Add
         </button>
       </form>
+      {error ? (
+        <div className="alert alert-warning mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <span>{error}</span>
+        </div>
+      ) : null}
     </>
   );
 }

@@ -47,6 +47,7 @@ app.get("/restaurants/:id", async (req, res) => {
 app.post("/restaurants", async (req, res) => {
   try {
     const { name, location, price_range } = req.body;
+
     const restaurant = await pool.query(
       "INSERT INTO restaurants (name, location, price_range) VALUES ($1, $2, $3) RETURNING *",
       [name, location, price_range]

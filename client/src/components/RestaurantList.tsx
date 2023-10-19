@@ -26,7 +26,7 @@ function RestaurantList() {
       setRestaurants(jsonData.data);
     } catch (err) {
       if (err instanceof Error) {
-        console.error(err);
+        console.log(err);
       } else {
         console.error(err);
       }
