@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRestaurantsContext } from "../context/RestaurantsContext";
 import StarRating from "./StarRating";
@@ -15,7 +15,7 @@ function RestaurantList() {
       return copyRestaurants.sort((a, b) => {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
       });
-    } else if (sortKeyword === "most") {
+    } else if (sortKeyword === "most_ratings") {
       return copyRestaurants.sort((a, b) => {
         return b.review_count - a.review_count;
       });
@@ -90,6 +90,7 @@ function RestaurantList() {
   return (
     <>
       <select
+        id="restaurant-sort"
         onChange={(e) => setSortKeyword(e.target.value)}
         className="ml-1 mb-6 mt-8 select select-ghost w-fit"
       >

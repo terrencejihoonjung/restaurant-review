@@ -79,7 +79,11 @@ function AddReview({ reviews, setReviews }: AddReviewProps) {
           <span>{error}</span>
         </div>
       ) : null}
-      <form className="flex flex-col" onSubmit={handleReviewSubmit}>
+      <form
+        id="review-form"
+        className="flex flex-col"
+        onSubmit={handleReviewSubmit}
+      >
         <div className="rating my-2">
           <input
             type="radio"

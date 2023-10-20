@@ -51,10 +51,12 @@ function AddRestaurant() {
   return (
     <>
       <form
+        id="restaurant-form"
         className="flex justify-center space-x-12 py-6"
         onSubmit={(e) => handleSubmit(e)}
       >
         <input
+          id="restaurant-name"
           type="text"
           placeholder="Restaurant Name"
           className={`input input-bordered w-full max-w-xs + ${
@@ -64,6 +66,7 @@ function AddRestaurant() {
           onChange={(e) => setName(e.target.value)}
         />
         <input
+          id="restaurant-location"
           type="text"
           placeholder="Location"
           className={`input input-bordered w-full max-w-xs + ${
@@ -73,6 +76,7 @@ function AddRestaurant() {
           onChange={(e) => setLocation(e.target.value)}
         />
         <select
+          id="restaurant-pricerange"
           className={`input input-bordered w-full max-w-xs + ${
             error && priceRange === "Price Range" ? "input-error" : ""
           }`}
@@ -87,7 +91,10 @@ function AddRestaurant() {
           <option value={5}>$$$$$</option>
         </select>
 
-        <button className="btn font-inter text-white-100 bg-gradient-to-r from-fuchsia-500 to-yelp-red">
+        <button
+          id="restaurant-submit"
+          className="btn font-inter text-white-100 bg-gradient-to-r from-fuchsia-500 to-yelp-red"
+        >
           Add
         </button>
       </form>
