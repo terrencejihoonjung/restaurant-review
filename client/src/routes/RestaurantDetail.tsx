@@ -9,6 +9,7 @@ type Review = {
   name: string;
   rating: number;
   review: string;
+  date: Date;
   readonly id: number;
   readonly restaurant_id: number;
 };
@@ -23,12 +24,14 @@ function RestaurantDetail() {
   const sortedReviews = sortReviews();
 
   function sortReviews(): Review[] {
-    if (sortKeyword === "recent") {
-      return reviews;
-    }
+    const copyReviews = [...reviews];
 
-    const copyRevews = [...reviews];
-    return copyRevews.sort((a, b) => {
+    if (sortKeyword === "recent") {
+      return copyReviews.sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+    }
+    return copyReviews.sort((a, b) => {
       return sortKeyword === "highest"
         ? b.rating - a.rating
         : a.rating - b.rating;

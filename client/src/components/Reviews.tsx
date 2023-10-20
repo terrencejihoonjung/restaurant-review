@@ -3,6 +3,7 @@ type Review = {
   name: string;
   rating: number;
   review: string;
+  date: Date;
   readonly id: number;
   readonly restaurant_id: number;
 };
@@ -14,7 +15,7 @@ type ReviewProps = {
 function Reviews({ sortedReviews }: ReviewProps) {
   return (
     <>
-      <div className="grid grid-cols-4 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-scren">
+      <div className="grid grid-cols-3 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-scren">
         {sortedReviews.map((review) => (
           <div
             key={review.id}
@@ -26,7 +27,7 @@ function Reviews({ sortedReviews }: ReviewProps) {
                 <StarRating rating={review.rating} />
               </span>
               <span className="italic text-xs opacity-50">
-                Reviewed on {new Date().toDateString()}
+                Reviewed on {new Date(review.date).toLocaleString()}
               </span>
               <p className="line-clamp-4">{review.review}</p>
             </div>

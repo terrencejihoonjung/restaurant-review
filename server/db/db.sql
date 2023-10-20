@@ -17,3 +17,6 @@ SELECT restaurant_id, COUNT(reviews) FROM reviews GROUP BY restaurant_id;
 SELECT * FROM restaurants LEFT JOIN  
     (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews 
     ON restaurant_id = reviews.restaurant_id;
+
+/* Add date property to reviews table */
+ALTER TABLE reviews ADD COLUMN date DATE;

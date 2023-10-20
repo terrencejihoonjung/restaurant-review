@@ -5,6 +5,7 @@ type Review = {
   name: string;
   rating: number;
   review: string;
+  date: Date;
   readonly id: number;
   readonly restaurant_id: number;
 };
@@ -32,7 +33,11 @@ function AddReview({ reviews, setReviews }: AddReviewProps) {
         throw new Error("Please fill in empty fields");
       }
 
-      const reviewBody = { name, rating, review };
+      const reviewBody = {
+        name,
+        rating,
+        review,
+      };
       const response = await fetch(
         `http://localhost:3000/restaurants/${id}/reviews`,
         {

@@ -96,8 +96,8 @@ app.post("/restaurants/:id/reviews", async (req, res) => {
     const { id } = req.params;
     const { name, review, rating } = req.body;
     const addedReview = await pool.query(
-      "INSERT INTO reviews (restaurant_id, name, review, rating) VALUES ($1, $2, $3, $4) RETURNING *",
-      [id, name, review, rating]
+      "INSERT INTO reviews (restaurant_id, name, review, rating, date) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [id, name, review, rating, new Date()]
     );
     res.json(addedReview.rows[0]);
   } catch (err) {
