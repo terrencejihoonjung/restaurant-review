@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRestaurantsContext } from "../context/RestaurantsContext";
 import StarRating from "./StarRating";
