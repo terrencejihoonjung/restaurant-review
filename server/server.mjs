@@ -11,7 +11,7 @@ app.use(cors());
 app.get("/restaurants", async (req, res) => {
   try {
     const restaurants = await pool.query(
-      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON restaurant_id = reviews.restaurant_id"
+      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON id = reviews.restaurant_id"
     );
     res.json({
       length: restaurants.rows.length,
@@ -26,7 +26,7 @@ app.get("/restaurants/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const restaurant = await pool.query(
-      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON restaurant_id = reviews.restaurant_id WHERE id = $1",
+      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON id = reviews.restaurant_id WHERE id = $1",
       [id]
     );
     const reviews = await pool.query(
@@ -49,8 +49,8 @@ app.post("/restaurants", async (req, res) => {
     const { name, location, price_range } = req.body;
 
     const restaurant = await pool.query(
-      "INSERT INTO restaurants (name, location, price_range) VALUES ($1, $2, $3) RETURNING *",
-      [name, location, price_range]
+      "INSERT INTO restaurants (name, location, price_range, date) VALUES ($1, $2, $3, $4) RETURNING *",
+      [name, location, price_range, new Date()]
     );
     res.json(restaurant.rows[0]);
   } catch (err) {
