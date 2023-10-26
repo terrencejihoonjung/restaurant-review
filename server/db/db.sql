@@ -20,3 +20,21 @@ SELECT * FROM restaurants LEFT JOIN
 
 /* Add date property to reviews table */
 ALTER TABLE reviews ADD COLUMN date DATE;
+
+/* Add Likes Column to Reviews Table */
+ALTER TABLE reviews ADD COLUMN likes INT NOT NULL DEFAULT 0;
+
+/* Create a UserReviews Table */
+CREATE TABLE UserALTEReviews (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id),
+    review_id BIGINT NOT NULL REFERENCES reviews(id)
+);
+
+/* Create a Users Table */
+CREATE TABLE Users (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password TEXT NOT NULL
+);
