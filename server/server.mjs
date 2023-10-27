@@ -13,7 +13,7 @@ app.use(morgan("dev")); // third-party logger
 app.use(cors());
 
 app.use("/users", users);
-app.use("/restaurants", verifyToken, restaurants);
+app.use("/restaurants", restaurants);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

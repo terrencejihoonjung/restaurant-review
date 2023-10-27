@@ -6,6 +6,7 @@ import { RestaurantsContext, Restaurant } from "./context/RestaurantsContext";
 // Component Imports
 import Home from "./routes/Home";
 import NoMatch from "./routes/NoMatch";
+import User from "./routes/User";
 import NavBar from "./components/NavBar";
 import RestaurantDetail from "./routes/RestaurantDetail";
 import UpdateRestaurant from "./routes/UpdateRestaurant";
@@ -19,6 +20,8 @@ function App() {
       <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
         <Routes>
           <Route index element={<Home />} />
+
+          <Route path="/users" element={<User />} />
 
           <Route path="/restaurants" element={<Home />} />
           <Route path="/restaurants/:id" element={<RestaurantDetail />} />
