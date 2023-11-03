@@ -24,9 +24,12 @@ function App() {
 
   async function getUser() {
     try {
-      const response = await fetch("http://localhost:3000/users/login");
-      if (response.ok) {
-        const jsonData = await response.json();
+      const response = await fetch("http://localhost:3000/users/login", {
+        credentials: "include",
+      });
+      const jsonData = await response.json();
+      console.log(jsonData);
+      if (jsonData.loggedIn) {
         setUser(jsonData.user);
         navigate("/restaurants");
       } else {
@@ -44,15 +47,18 @@ function App() {
   useEffect(() => {
     getUser();
   }, []);
-  console.log(user);
+
   return (
     <div className="container min-w-full min-h-full">
-      <NavBar />
+      <NavBar user={user} />
       <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
         <Routes>
+          <Route
+            index
+            element={user.id ? <Home /> : <UserAuth setUser={setUser} />}
+          />
           {user.id ? (
             <>
-              <Route index element={<Home />} />
               <Route path="/restaurants" element={<Home />} />
               <Route path="/restaurants/:id" element={<RestaurantDetail />} />
               <Route

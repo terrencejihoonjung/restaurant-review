@@ -63,7 +63,7 @@ export const login = async (req, res) => {
       email: user.rows[0].email,
       username: user.rows[0].username,
     };
-
+    console.log(req.session.user);
     res.json({
       message: "User logged in successfully.",
       user: {
@@ -79,10 +79,20 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    req.session.destroy(() => {
-      res.clearCookie("connect.sid");
-      res.json({ message: "Logged out successfully" });
-    });
+    req.session.user = null;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const checkAuth = async (req, res) => {
+  try {
+    if (!req.session.user) {
+      res.send({ isLoggedIn: false });
+    } else {
+      console.log(req.session.user);
+      res.send({ isLoggedIn: true, user: req.sesion.user });
+    }
   } catch (err) {
     console.error(err);
   }

@@ -12,13 +12,19 @@ const app = express();
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
-app.use(cors()); // cross-origin-resource-sharing
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your front-end's URL
+    credentials: true,
+  })
+); // cross-origin-resource-sharing
 app.use(cookieParser()); // Parse incoming cookies from client
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    credentials: true,
     cookie: { maxAge: 3600000 }, // Session duration: 1 hour
   })
 ); // Enable sessions for user auth

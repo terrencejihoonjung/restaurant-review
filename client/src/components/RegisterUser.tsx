@@ -22,13 +22,14 @@ function RegisterUser({ setUser }: UserProps) {
       const body = { username, email, password };
       const response = await fetch("http://localhost:3000/users/register", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       });
       const jsonData = await response.json();
-
+      console.log(jsonData);
       if (response.ok) {
         setUser(jsonData.user);
         navigate("/restaurants");

@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
 
-function NavBar() {
+type User = {
+  id: number;
+  username: string;
+  email: string;
+};
+
+type NavBarProps = {
+  user?: User;
+};
+
+function NavBar({ user }: NavBarProps) {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -11,6 +21,7 @@ function NavBar() {
           RR
         </Link>
       </div>
+      <p>Logged in as: {user?.username}</p>
       <div className="flex-none">
         <Link
           to="https://github.com/terrencejihoonjung"

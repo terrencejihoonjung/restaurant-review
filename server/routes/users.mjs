@@ -1,12 +1,16 @@
 import express from "express";
-import { register, login, logout } from "../controllers/userController.mjs";
-import verifyUser from "../middleware/verifyUser.mjs";
+import {
+  register,
+  login,
+  logout,
+  checkAuth,
+} from "../controllers/userController.mjs";
 
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/login", verifyUser);
+router.get("/login", checkAuth);
 router.post("/logout", logout);
 
 export default router;
