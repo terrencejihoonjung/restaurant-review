@@ -3,14 +3,24 @@ import morgan from "morgan";
 import cors from "cors";
 import restaurants from "./routes/restaurants.mjs";
 import users from "./routes/users.mjs";
-import verifyToken from "./middleware/verifyJWT.mjs";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+
 dotenv.config();
 const app = express();
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
-app.use(cors());
+app.use(cors()); // cross-origin-resource-sharing
+app.use(cookieParser()); // Parse incoming cookies from client
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+); // Enable sessions for user auth
 
 app.use("/users", users);
 app.use("/restaurants", restaurants);

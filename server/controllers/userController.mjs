@@ -1,6 +1,5 @@
 import pool from "../db/index.mjs";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
@@ -21,22 +20,16 @@ export const register = async (req, res) => {
 
     // Insert a new user into the database
     const newUser = await pool.query(
-      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email",
       [username, email, hashedPassword]
     );
 
-    const token = jwt.sign(
-      { userId: newUser.rows[0].id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
-    );
+    req.session.user = newUser.rows[0];
 
-    console.log("Generated token:", token);
-    console.log("JWT_SECRET:", process.env.JWT_SECRET);
-
-    res.json({ message: "User registered successfully.", token: token });
+    res.json({
+      message: "User registered successfully.",
+      user: newUser.rows[0],
+    });
   } catch (error) {
     console.error(error);
   }
@@ -65,15 +58,32 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid password." });
     }
 
-    // Generate a JWT token and send it to the client
-    const token = jwt.sign(
-      { userId: user.rows[0].id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    req.session.user = {
+      id: user.rows[0].id,
+      email: user.rows[0].email,
+      username: user.rows[0].username,
+    };
 
-    res.json({ message: "User logged in successfully.", token });
+    res.json({
+      message: "User logged in successfully.",
+      user: {
+        id: user.rows[0].id,
+        email: user.rows[0].email,
+        username: user.rows[0].username,
+      },
+    });
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid");
+      res.json({ message: "Logged out successfully" });
+    });
+  } catch (err) {
+    console.error(err);
   }
 };
