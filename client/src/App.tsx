@@ -15,6 +15,7 @@ import UpdateRestaurant from "./routes/UpdateRestaurant";
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [user, setUser] = useState<User>({} as User);
+  const [toastToggle, setToastToggle] = useState(false);
   const navigate = useNavigate();
 
   async function getUser() {
@@ -42,7 +43,7 @@ function App() {
   return (
     <div className="container min-w-full min-h-full">
       <UsersContext.Provider value={{ user, setUser }}>
-        <NavBar />
+        <NavBar setToastToggle={setToastToggle} />
         <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
           <Routes>
             {user.id ? (
@@ -62,6 +63,13 @@ function App() {
           </Routes>
         </RestaurantsContext.Provider>
       </UsersContext.Provider>
+      {toastToggle ? (
+        <div className="toast">
+          <div className="alert alert-success">
+            <span>Successfully Logged Out</span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

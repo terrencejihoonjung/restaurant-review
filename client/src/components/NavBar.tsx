@@ -1,7 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUsersContext, User } from "../context/UsersContext";
 
-function NavBar() {
+type NavBarProps = {
+  setToastToggle: (toastToggle: boolean) => void;
+};
+
+function NavBar({ setToastToggle }: NavBarProps) {
   const navigate = useNavigate();
   const { user, setUser } = useUsersContext();
 
@@ -14,7 +18,11 @@ function NavBar() {
       const jsonData = await response.json();
       setUser({} as User);
       navigate("/users");
-      console.log(jsonData.message);
+      setToastToggle(true);
+      setTimeout(() => {
+        // After 3 seconds set the show value to false
+        setToastToggle(false);
+      }, 3000);
     } catch (err: unknown) {
       console.error(err);
     }
