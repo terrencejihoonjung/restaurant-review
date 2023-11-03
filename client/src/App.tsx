@@ -28,8 +28,8 @@ function App() {
         credentials: "include",
       });
       const jsonData = await response.json();
-      console.log(jsonData);
-      if (jsonData.loggedIn) {
+      console.log(jsonData.user);
+      if (jsonData.isLoggedIn) {
         setUser(jsonData.user);
         navigate("/restaurants");
       } else {
@@ -50,15 +50,12 @@ function App() {
 
   return (
     <div className="container min-w-full min-h-full">
-      <NavBar user={user} />
+      <NavBar user={user} setUser={setUser} />
       <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
         <Routes>
-          <Route
-            index
-            element={user.id ? <Home /> : <UserAuth setUser={setUser} />}
-          />
           {user.id ? (
             <>
+              <Route index element={<Home />} />
               <Route path="/restaurants" element={<Home />} />
               <Route path="/restaurants/:id" element={<RestaurantDetail />} />
               <Route
@@ -69,7 +66,6 @@ function App() {
           ) : (
             <Route path="/users" element={<UserAuth setUser={setUser} />} />
           )}
-
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </RestaurantsContext.Provider>

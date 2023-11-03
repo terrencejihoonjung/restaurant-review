@@ -21,11 +21,12 @@ app.use(
 app.use(cookieParser()); // Parse incoming cookies from client
 app.use(
   session({
+    key: "current_user",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     credentials: true,
-    cookie: { maxAge: 3600000 }, // Session duration: 1 hour
+    cookie: { maxAge: 3600000 / 60 }, // Session duration: 1 hour
   })
 ); // Enable sessions for user auth
 

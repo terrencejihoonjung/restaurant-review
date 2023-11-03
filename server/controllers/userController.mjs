@@ -80,6 +80,7 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     req.session.user = null;
+    res.json({ message: "User Logged Out" });
   } catch (err) {
     console.error(err);
   }
@@ -90,8 +91,8 @@ export const checkAuth = async (req, res) => {
     if (!req.session.user) {
       res.send({ isLoggedIn: false });
     } else {
-      console.log(req.session.user);
-      res.send({ isLoggedIn: true, user: req.sesion.user });
+      req.session.save();
+      res.send({ isLoggedIn: true, user: req.session.user });
     }
   } catch (err) {
     console.error(err);

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type User = {
   id: number;
@@ -7,10 +7,32 @@ type User = {
 };
 
 type NavBarProps = {
-  user?: User;
+  user: User;
+  setUser: (user: User) => void;
 };
 
-function NavBar({ user }: NavBarProps) {
+function NavBar({ user, setUser }: NavBarProps) {
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    try {
+      const response = await fetch("http://localhost:3000/users/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      const jsonData = await response.json();
+      setUser({} as User);
+      navigate("/users");
+      console.log(jsonData.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err);
+      } else {
+        console.error(err);
+      }
+    }
+  }
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -20,8 +42,13 @@ function NavBar({ user }: NavBarProps) {
         >
           RR
         </Link>
+        {user.id ? <p>Logged in as: {user.username}</p> : null}
       </div>
-      <p>Logged in as: {user?.username}</p>
+      {user.id ? (
+        <button onClick={() => handleLogout()} className="btn">
+          Logout
+        </button>
+      ) : null}
       <div className="flex-none">
         <Link
           to="https://github.com/terrencejihoonjung"
