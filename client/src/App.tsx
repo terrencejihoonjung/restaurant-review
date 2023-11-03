@@ -1,5 +1,5 @@
 // Tool Imports
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { RestaurantsContext, Restaurant } from "./context/RestaurantsContext";
 
@@ -20,37 +20,49 @@ type User = {
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [user, setUser] = useState<User>({} as User);
+  const navigate = useNavigate();
 
-  // async function getUser() {
-  //   try {
-  //     const response = await fetch("");
-  //   } catch (err) {
-  //     if (err instanceof Error) {
-  //       console.error(err);
-  //     } else {
-  //       console.error(err);
-  //     }
-  //   }
-  // }
+  async function getUser() {
+    try {
+      const response = await fetch("http://localhost:3000/users/login");
+      if (response.ok) {
+        const jsonData = await response.json();
+        setUser(jsonData.user);
+        navigate("/restaurants");
+      } else {
+        navigate("/users");
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err);
+      } else {
+        console.error(err);
+      }
+    }
+  }
 
-  useEffect(() => {}, []);
-
+  useEffect(() => {
+    getUser();
+  }, []);
+  console.log(user);
   return (
     <div className="container min-w-full min-h-full">
       <NavBar />
       <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
         <Routes>
-          <Route path="/users" element={<UserAuth setUser={setUser} />} />
-
-          <>
-            <Route index element={<Home />} />
-            <Route path="/restaurants" element={<Home />} />
-            <Route path="/restaurants/:id" element={<RestaurantDetail />} />
-            <Route
-              path="/restaurants/:id/update"
-              element={<UpdateRestaurant />}
-            />
-          </>
+          {user.id ? (
+            <>
+              <Route index element={<Home />} />
+              <Route path="/restaurants" element={<Home />} />
+              <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+              <Route
+                path="/restaurants/:id/update"
+                element={<UpdateRestaurant />}
+              />
+            </>
+          ) : (
+            <Route path="/users" element={<UserAuth setUser={setUser} />} />
+          )}
 
           <Route path="*" element={<NoMatch />} />
         </Routes>

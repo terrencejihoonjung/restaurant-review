@@ -28,9 +28,13 @@ function RegisterUser({ setUser }: UserProps) {
         body: JSON.stringify(body),
       });
       const jsonData = await response.json();
-      setUser(jsonData.user);
-      console.log();
-      navigate("/restaurants");
+
+      if (response.ok) {
+        setUser(jsonData.user);
+        navigate("/restaurants");
+      } else {
+        throw new Error(jsonData.message);
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);

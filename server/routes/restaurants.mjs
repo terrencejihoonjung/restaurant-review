@@ -7,15 +7,16 @@ import {
   deleteRestaurant,
   addRestaurantReview,
 } from "../controllers/restaurantController.mjs";
+import verifyUser from "../middleware/verifyUser.mjs";
 const router = express.Router();
 
-router.get("/", getRestaurants);
-router.post("/", addRestaurant);
+router.get("/", verifyUser, getRestaurants);
+router.post("/", verifyUser, addRestaurant);
 
-router.get("/:id", getRestaurant);
-router.put("/:id", updateRestaurant);
-router.delete("/:id", deleteRestaurant);
+router.get("/:id", verifyUser, getRestaurant);
+router.put("/:id", verifyUser, updateRestaurant);
+router.delete("/:id", verifyUser, deleteRestaurant);
 
-router.post("/:id/reviews", addRestaurantReview);
+router.post("/:id/reviews", verifyUser, addRestaurantReview);
 
 export default router;
