@@ -1,26 +1,15 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useReviewsContext } from "../context/ReviewsContext";
 
-type Review = {
-  name: string;
-  rating: number;
-  review: string;
-  date: Date;
-  readonly id: number;
-  readonly restaurant_id: number;
-};
-
-type AddReviewProps = {
-  reviews: Review[];
-  setReviews: (reviews: Review[]) => void;
-};
-
-function AddReview({ reviews, setReviews }: AddReviewProps) {
+function AddReview() {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [rating, setRating] = useState("");
   const [review, setReview] = useState("");
   const [error, setError] = useState("");
+
+  const { reviews, setReviews } = useReviewsContext();
 
   const starStyles = `mask mask-star-2 bg-orange-400 ${
     rating === "" ? "opacity-20" : ""

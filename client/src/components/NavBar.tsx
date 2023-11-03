@@ -1,18 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useUsersContext, User } from "../context/UsersContext";
 
-type User = {
-  id: number;
-  username: string;
-  email: string;
-};
-
-type NavBarProps = {
-  user: User;
-  setUser: (user: User) => void;
-};
-
-function NavBar({ user, setUser }: NavBarProps) {
+function NavBar() {
   const navigate = useNavigate();
+  const { user, setUser } = useUsersContext();
 
   async function handleLogout() {
     try {

@@ -1,21 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUsersContext } from "../context/UsersContext";
 
-type User = {
-  id: number;
-  username: string;
-  email: string;
-};
-
-type UserProps = {
-  setUser: (user: User) => void;
-};
-
-function RegisterUser({ setUser }: UserProps) {
+function RegisterUser() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
+  const { user, setUser } = useUsersContext();
 
   async function handleRegister() {
     try {

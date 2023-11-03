@@ -4,15 +4,7 @@ import { Restaurant } from "../context/RestaurantsContext";
 import StarRating from "../components/StarRating";
 import AddReview from "../components/AddReview";
 import Reviews from "../components/Reviews";
-
-type Review = {
-  name: string;
-  rating: number;
-  review: string;
-  date: Date;
-  readonly id: number;
-  readonly restaurant_id: number;
-};
+import { Review } from "../context/ReviewsContext";
 
 function RestaurantDetail() {
   const { id } = useParams();
@@ -80,7 +72,7 @@ function RestaurantDetail() {
           <span className="font-inter font-black ml-2">(0)</span>
         )}
       </div>
-      <AddReview reviews={reviews} setReviews={setReviews} />
+      <AddReview />
       <div>
         {selectedRestaurant.name && (
           <>

@@ -2,6 +2,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { RestaurantsContext, Restaurant } from "./context/RestaurantsContext";
+import { UsersContext, User } from "./context/UsersContext";
 
 // Component Imports
 import Home from "./routes/Home";
@@ -10,12 +11,6 @@ import UserAuth from "./routes/UserAuth";
 import NavBar from "./components/NavBar";
 import RestaurantDetail from "./routes/RestaurantDetail";
 import UpdateRestaurant from "./routes/UpdateRestaurant";
-
-type User = {
-  id: number;
-  username: string;
-  email: string;
-};
 
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -50,25 +45,27 @@ function App() {
 
   return (
     <div className="container min-w-full min-h-full">
-      <NavBar user={user} setUser={setUser} />
-      <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
-        <Routes>
-          {user.id ? (
-            <>
-              <Route index element={<Home />} />
-              <Route path="/restaurants" element={<Home />} />
-              <Route path="/restaurants/:id" element={<RestaurantDetail />} />
-              <Route
-                path="/restaurants/:id/update"
-                element={<UpdateRestaurant />}
-              />
-            </>
-          ) : (
-            <Route path="/users" element={<UserAuth setUser={setUser} />} />
-          )}
-          <Route path="*" element={<NoMatch />} />
-        </Routes>
-      </RestaurantsContext.Provider>
+      <UsersContext.Provider value={{ user, setUser }}>
+        <NavBar />
+        <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
+          <Routes>
+            {user.id ? (
+              <>
+                <Route index element={<Home />} />
+                <Route path="/restaurants" element={<Home />} />
+                <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+                <Route
+                  path="/restaurants/:id/update"
+                  element={<UpdateRestaurant />}
+                />
+              </>
+            ) : (
+              <Route path="/users" element={<UserAuth />} />
+            )}
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+        </RestaurantsContext.Provider>
+      </UsersContext.Provider>
     </div>
   );
 }

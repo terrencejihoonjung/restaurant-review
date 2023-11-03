@@ -1,18 +1,7 @@
 import StarRating from "../components/StarRating";
-type Review = {
-  name: string;
-  rating: number;
-  review: string;
-  date: Date;
-  readonly id: number;
-  readonly restaurant_id: number;
-};
+import { SortedReviewProps } from "../context/ReviewsContext";
 
-type ReviewProps = {
-  sortedReviews: Review[];
-};
-
-function Reviews({ sortedReviews }: ReviewProps) {
+function Reviews({ sortedReviews }: SortedReviewProps) {
   return (
     <>
       <div className="grid grid-cols-3 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-scren">
