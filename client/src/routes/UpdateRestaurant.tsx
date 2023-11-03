@@ -19,12 +19,8 @@ function UpdateRestaurant() {
       setName(jsonData.data.restaurant.name);
       setLocation(jsonData.data.restaurant.location);
       setPriceRange(jsonData.data.restaurant.price_range);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-      } else {
-        console.error(err);
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   }
 
@@ -42,11 +38,9 @@ function UpdateRestaurant() {
         body: JSON.stringify(body),
       });
       navigate("/restaurants");
-    } catch (err) {
+    } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
-      } else {
-        console.error(err);
       }
     }
   }

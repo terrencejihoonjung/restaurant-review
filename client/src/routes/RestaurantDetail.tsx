@@ -38,12 +38,8 @@ function RestaurantDetail() {
       const jsonData = await response.json();
       setSelectedRestaurant(jsonData.data.restaurant);
       setReviews(jsonData.data.reviews);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-      } else {
-        console.error(err);
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   }
 

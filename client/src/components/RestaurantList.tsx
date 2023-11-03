@@ -53,12 +53,8 @@ function RestaurantList() {
       const response = await fetch("http://localhost:3000/restaurants");
       const jsonData = await response.json();
       setRestaurants(jsonData.data);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(err);
-      } else {
-        console.error(err);
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   }
 

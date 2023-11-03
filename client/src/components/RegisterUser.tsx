@@ -29,12 +29,8 @@ function RegisterUser() {
       } else {
         throw new Error(jsonData.message);
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-      } else {
-        console.error(err);
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   }
 

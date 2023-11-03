@@ -15,12 +15,8 @@ function NavBar() {
       setUser({} as User);
       navigate("/users");
       console.log(jsonData.message);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-      } else {
-        console.error(err);
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   }
 

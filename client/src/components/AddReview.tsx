@@ -41,8 +41,6 @@ function AddReview() {
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
-      } else {
-        console.error(err);
       }
     }
   }

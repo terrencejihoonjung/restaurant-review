@@ -23,19 +23,15 @@ function App() {
         credentials: "include",
       });
       const jsonData = await response.json();
-      console.log(jsonData.user);
+
       if (jsonData.isLoggedIn) {
         setUser(jsonData.user);
         navigate("/restaurants");
       } else {
         navigate("/users");
       }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-      } else {
-        console.error(err);
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   }
 
