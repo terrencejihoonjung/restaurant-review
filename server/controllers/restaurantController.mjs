@@ -85,10 +85,10 @@ export const deleteRestaurant = async (req, res) => {
 export const addRestaurantReview = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, review, rating } = req.body;
+    const { name, review, rating, user_id, author } = req.body;
     const addedReview = await pool.query(
-      "INSERT INTO reviews (restaurant_id, name, review, rating, date) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [id, name, review, rating, new Date()]
+      "INSERT INTO reviews (restaurant_id, name, review, rating, date, user_id, author) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [id, name, review, rating, new Date(), user_id, author]
     );
     res.json(addedReview.rows[0]);
   } catch (err) {

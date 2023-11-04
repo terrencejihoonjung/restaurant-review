@@ -5,6 +5,8 @@ export type Review = {
   rating: number;
   review: string;
   date: Date;
+  user_id: number;
+  author: string;
   readonly id: number;
   readonly restaurant_id: number;
 };

@@ -27,7 +27,6 @@ function App() {
 
       if (jsonData.isLoggedIn) {
         setUser(jsonData.user);
-        navigate("/restaurants");
       } else {
         navigate("/users");
       }

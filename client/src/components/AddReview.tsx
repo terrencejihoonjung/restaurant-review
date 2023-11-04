@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useReviewsContext } from "../context/ReviewsContext";
+import { useUsersContext } from "../context/UsersContext";
 
 function AddReview() {
   const { id } = useParams();
@@ -10,6 +11,7 @@ function AddReview() {
   const [error, setError] = useState("");
 
   const { reviews, setReviews } = useReviewsContext();
+  const { user } = useUsersContext();
 
   const starStyles = `mask mask-star-2 bg-orange-400 ${
     rating === "" ? "opacity-20" : ""
@@ -26,6 +28,8 @@ function AddReview() {
         name,
         rating,
         review,
+        user_id: user.id,
+        author: user.username,
       };
 
       const response = await fetch(

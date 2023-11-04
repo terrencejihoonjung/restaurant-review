@@ -10,13 +10,13 @@ import {
 import verifyUser from "../middleware/verifyUser.mjs";
 const router = express.Router();
 
-router.get("/", verifyUser, getRestaurants);
-router.post("/", verifyUser, addRestaurant);
+router.get("/", getRestaurants);
+router.post("/", addRestaurant);
 
-router.get("/:id", verifyUser, getRestaurant);
-router.put("/:id", verifyUser, updateRestaurant);
-router.delete("/:id", verifyUser, deleteRestaurant);
+router.get("/:id", getRestaurant);
+router.put("/:id", updateRestaurant);
+router.delete("/:id", deleteRestaurant);
 
-router.post("/:id/reviews", verifyUser, addRestaurantReview);
+router.post("/:id/reviews", addRestaurantReview);
 
 export default router;

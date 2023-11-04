@@ -1,7 +1,10 @@
 import StarRating from "../components/StarRating";
 import { SortedReviewProps } from "../context/ReviewsContext";
+import { useUsersContext } from "../context/UsersContext";
 
 function Reviews({ sortedReviews }: SortedReviewProps) {
+  const { user } = useUsersContext();
+
   return (
     <>
       <div className="grid grid-cols-3 justify-items-center gap-4 px-24 py-6 overflow-y-auto max-h-scren">
@@ -19,6 +22,9 @@ function Reviews({ sortedReviews }: SortedReviewProps) {
                 Reviewed on {new Date(review.date).toLocaleString()}
               </span>
               <p className="line-clamp-4">{review.review}</p>
+              <span className="flex flex-row-reverse font-black text-xs opacity-75">
+                {review.author}
+              </span>
             </div>
           </div>
         ))}
