@@ -2,9 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsersContext } from "../context/UsersContext";
 
-function LoginUser() {
+type LoginProps = {
+  setToastToggle: (toastToggle: boolean) => void;
+};
+
+function LoginUser({ setToastToggle }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const { user, setUser } = useUsersContext();
@@ -21,15 +26,22 @@ function LoginUser() {
         body: JSON.stringify(body),
       });
       const jsonData = await response.json();
-      console.log(jsonData);
+
       if (response.ok) {
         setUser(jsonData.user);
         navigate("/restaurants");
+        setToastToggle(true);
+        setTimeout(() => {
+          // After 3 seconds set the show value to false
+          setToastToggle(false);
+        }, 3000);
       } else {
         throw new Error(jsonData.message);
       }
     } catch (err: unknown) {
-      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     }
   }
 
@@ -61,6 +73,24 @@ function LoginUser() {
               className="input input-bordered w-full max-w-xs"
             />
           </div>
+          {error ? (
+            <div className="alert alert-warning mb-4 w-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <span>{error}</span>
+            </div>
+          ) : null}
           <div className="card-actions justify-start mt-2">
             <button onClick={() => handleLogin()} className="btn">
               Login

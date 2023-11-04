@@ -57,7 +57,10 @@ function App() {
                 />
               </>
             ) : (
-              <Route path="/users" element={<UserAuth />} />
+              <Route
+                path="/users"
+                element={<UserAuth setToastToggle={setToastToggle} />}
+              />
             )}
             <Route path="*" element={<NoMatch />} />
           </Routes>
@@ -66,7 +69,9 @@ function App() {
       {toastToggle ? (
         <div className="toast">
           <div className="alert alert-success">
-            <span>Successfully Logged Out</span>
+            <span>
+              {user.id ? "Successfully Logged In" : "Successfully Logged Out"}
+            </span>
           </div>
         </div>
       ) : null}

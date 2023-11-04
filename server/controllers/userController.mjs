@@ -12,7 +12,7 @@ export const register = async (req, res) => {
     );
 
     if (existingUser.rows.length > 0) {
-      return res.status(400).json({ message: "User already exists." });
+      return res.status(400).json({ message: "Email is already in use." });
     }
 
     // Hash the password before saving it to the database
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(401).json({ message: "User not found." });
+      return res.status(401).json({ message: "User does not exist." });
     }
 
     // Verify the provided password with the hashed password in the database
