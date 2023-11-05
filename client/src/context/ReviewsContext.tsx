@@ -7,6 +7,7 @@ export type Review = {
   date: Date;
   user_id: number;
   author: string;
+  likes: number;
   readonly id: number;
   readonly restaurant_id: number;
 };
