@@ -6,6 +6,7 @@ import users from "./routes/users.mjs";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import verifyUser from "./middleware/verifyUser.mjs";
 
 dotenv.config();
 const app = express();
@@ -26,7 +27,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     credentials: true,
-    cookie: { maxAge: 3600000 / 20 }, // Session duration: 1 hour
+    cookie: { maxAge: 3600000 / 6 }, // Session duration: 1 hour
   })
 ); // Enable sessions for user auth
 

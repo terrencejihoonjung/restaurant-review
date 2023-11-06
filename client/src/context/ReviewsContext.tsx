@@ -18,7 +18,7 @@ export type SortedReviewProps = {
 
 export type ReviewProps = {
   reviews: Review[];
-  setReviews: (reviews: Review[]) => void;
+  setReviews?: (reviews: Review[]) => void;
 };
 
 export const ReviewsContext = createContext<ReviewProps>({
