@@ -9,6 +9,10 @@ export default {
       colors: {
         "yelp-red": "#FF1A1A",
       },
+      spacing: {
+        108: "22rem",
+        152: "38rem",
+      },
     },
   },
   daisyui: {

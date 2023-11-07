@@ -11,6 +11,7 @@ import UserAuth from "./routes/UserAuth";
 import NavBar from "./components/NavBar";
 import RestaurantDetail from "./routes/RestaurantDetail";
 import UpdateRestaurant from "./routes/UpdateRestaurant";
+import Profile from "./routes/Profile";
 
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -54,6 +55,7 @@ function App() {
                   path="/restaurants/:id/update"
                   element={<UpdateRestaurant />}
                 />
+                <Route path="/profile/:userId" element={<Profile />} />
               </>
             ) : (
               <Route

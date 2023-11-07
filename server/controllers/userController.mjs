@@ -98,3 +98,18 @@ export const checkAuth = async (req, res) => {
     console.error(err);
   }
 };
+
+export const getUserReviews = async (req, res) => {
+  try {
+    const { id } = req.session.user;
+
+    const userReviews = await pool.query(
+      "SELECT * FROM reviews WHERE user_id = $1",
+      [id]
+    );
+
+    res.json({ userReviews: userReviews.rows });
+  } catch (err) {
+    console.error(err);
+  }
+};
