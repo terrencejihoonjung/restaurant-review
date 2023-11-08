@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Restaurant } from "../context/RestaurantsContext";
 import StarRating from "../components/StarRating";
@@ -13,22 +13,23 @@ function RestaurantDetail() {
   );
   const [reviews, setReviews] = useState<Review[]>([] as Review[]);
   const [sortKeyword, setSortKeyword] = useState("recent");
-  const sortedReviews = sortReviews();
+  const sortedReviews = useMemo(
+    function sortReviews(): Review[] {
+      const copyReviews = [...reviews];
 
-  function sortReviews(): Review[] {
-    const copyReviews = [...reviews];
-
-    if (sortKeyword === "recent") {
+      if (sortKeyword === "recent") {
+        return copyReviews.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+      }
       return copyReviews.sort((a, b) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
+        return sortKeyword === "highest"
+          ? b.rating - a.rating
+          : a.rating - b.rating;
       });
-    }
-    return copyReviews.sort((a, b) => {
-      return sortKeyword === "highest"
-        ? b.rating - a.rating
-        : a.rating - b.rating;
-    });
-  }
+    },
+    [reviews]
+  );
 
   async function getRestaurant() {
     try {

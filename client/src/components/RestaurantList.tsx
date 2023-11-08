@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useRestaurantsContext,
@@ -10,31 +10,32 @@ function RestaurantList() {
   const { restaurants, setRestaurants } = useRestaurantsContext();
   const navigate = useNavigate();
   const [sortKeyword, setSortKeyword] = useState("recent");
-  const sortedRestaurants = sortRestaurants();
-
-  function sortRestaurants(): Restaurant[] {
-    if (!restaurants) {
-      return restaurants;
-    }
-    const copyRestaurants = [...restaurants];
-    if (sortKeyword === "recent") {
-      return copyRestaurants.sort((a, b) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      });
-    } else if (sortKeyword === "most_ratings") {
-      return copyRestaurants.sort((a, b) => {
-        return b.review_count - a.review_count;
-      });
-    } else if (sortKeyword === "highest") {
-      return copyRestaurants.sort((a, b) => {
-        return b.avg_rating - a.avg_rating;
-      });
-    } else {
-      return copyRestaurants.sort((a, b) => {
-        return a.avg_rating - b.avg_rating;
-      });
-    }
-  }
+  const sortedRestaurants = useMemo(
+    function sortRestaurants(): Restaurant[] {
+      if (!restaurants) {
+        return restaurants;
+      }
+      const copyRestaurants = [...restaurants];
+      if (sortKeyword === "recent") {
+        return copyRestaurants.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+      } else if (sortKeyword === "most_ratings") {
+        return copyRestaurants.sort((a, b) => {
+          return b.review_count - a.review_count;
+        });
+      } else if (sortKeyword === "highest") {
+        return copyRestaurants.sort((a, b) => {
+          return b.avg_rating - a.avg_rating;
+        });
+      } else {
+        return copyRestaurants.sort((a, b) => {
+          return a.avg_rating - b.avg_rating;
+        });
+      }
+    },
+    [restaurants]
+  );
 
   function renderRating(avg_rating: number, review_count: number) {
     if (!review_count) {
