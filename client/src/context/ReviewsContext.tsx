@@ -12,6 +12,11 @@ export type Review = {
   readonly restaurant_id: number;
 };
 
+export type ReviewLiker = {
+  username: string;
+  id: number;
+};
+
 export type SortedReviewProps = {
   sortedReviews: Review[];
 };

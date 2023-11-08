@@ -101,14 +101,28 @@ export const checkAuth = async (req, res) => {
 
 export const getUserReviews = async (req, res) => {
   try {
-    const { id } = req.session.user;
+    const { userId } = req.params;
 
     const userReviews = await pool.query(
       "SELECT * FROM reviews WHERE user_id = $1",
-      [id]
+      [userId]
     );
 
     res.json({ userReviews: userReviews.rows });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const existingUser = await pool.query("SELECT * FROM users WHERE id = $1", [
+      userId,
+    ]);
+    if (existingUser.rows < 1)
+      return res.status(400).json({ message: "User not found" });
+    res.json({ user: existingUser.rows[0], message: "User Found" });
   } catch (err) {
     console.error(err);
   }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
-import { Review } from "../context/ReviewsContext";
+import { Review, ReviewLiker } from "../context/ReviewsContext";
 import Heart from "./Heart";
+import LikerRow from "./LikerRow";
 
 type ReviewProps = {
   review: Review;
@@ -10,6 +11,7 @@ type ReviewProps = {
 function ReviewCard({ review }: ReviewProps) {
   const [likeToggle, setLikeToggle] = useState(false);
   const [currentLikeCount, setCurrentLikeCount] = useState(review.likes);
+  const [likers, setLikers] = useState<ReviewLiker[]>([]);
 
   async function checkIfUserLiked() {
     try {
@@ -27,6 +29,7 @@ function ReviewCard({ review }: ReviewProps) {
         } else {
           setLikeToggle(false);
         }
+        setLikers(jsonData.likers);
       } else {
         throw new Error(jsonData.message);
       }
@@ -103,14 +106,42 @@ function ReviewCard({ review }: ReviewProps) {
 
           <span className="flex flex-row-reverse font-black text-s">
             <span className="flex items-center">
-              <button onClick={() => handleLike()}>
+              <button className="px-1" onClick={() => handleLike()}>
                 <Heart likeToggle={likeToggle} />
               </button>
-              {currentLikeCount}
+              <a
+                onClick={() => {
+                  const modal = document.getElementById(
+                    "my_modal_2"
+                  ) as HTMLDialogElement;
+                  if (modal) modal.showModal();
+                }}
+                className="link"
+              >
+                {currentLikeCount}
+              </a>
             </span>
           </span>
         </div>
       </div>
+
+      <dialog id="my_modal_2" className="modal">
+        <div className="modal-box">
+          <div className="overflow-x-auto">
+            <h3 className="font-bold text-lg">Likes</h3>
+            <table className="table">
+              <tbody>
+                {likers.map((liker) => {
+                  return <LikerRow key={liker.id} liker={liker} />;
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </>
   );
 }

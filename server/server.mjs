@@ -27,7 +27,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     credentials: true,
-    cookie: { maxAge: 3600000 / 6 }, // Session duration: 1 hour
+    cookie: { maxAge: 3600000 / 4 }, // Session duration: 1 hour
   })
 ); // Enable sessions for user auth
 

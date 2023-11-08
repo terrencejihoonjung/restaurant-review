@@ -1,5 +1,5 @@
-import { useUsersContext } from "../context/UsersContext";
-import { Link } from "react-router-dom";
+import { User, useUsersContext } from "../context/UsersContext";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import Avatar from "../components/Avatar";
 import ProfileStats from "../components/ProfileStats";
@@ -10,7 +10,11 @@ import { Review } from "../context/ReviewsContext";
 const iconStyle: string = "w-64 rounded-full";
 
 function Profile() {
+  const [profileUser, setProfileUser] = useState<User>({} as User);
   const { user } = useUsersContext();
+  const { userId } = useParams();
+  const navigate = useNavigate();
+
   const [userReviews, setUserReviews] = useState<Review[]>([] as Review[]);
   const profileRef: React.RefObject<HTMLInputElement> = useRef(null);
   const friendsRef: React.RefObject<HTMLInputElement> = useRef(null);
@@ -20,7 +24,21 @@ function Profile() {
     return count + review.likes;
   }, 0);
 
-  function handleProfileScroll(e: React.MouseEvent<HTMLButtonElement>) {
+  async function getUser() {
+    try {
+      const response = await fetch(`http://localhost:3000/users/${userId}`, {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const jsonData = await response.json();
+        setProfileUser(jsonData.user);
+      }
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  }
+
+  function handleProfileScroll() {
     profileRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -28,7 +46,7 @@ function Profile() {
     });
   }
 
-  function handleFriendsScroll(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleFriendsScroll() {
     friendsRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -36,7 +54,7 @@ function Profile() {
     });
   }
 
-  function handleReviewsScroll(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleReviewsScroll() {
     reviewsRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -46,9 +64,12 @@ function Profile() {
 
   async function getUserReviews() {
     try {
-      const response = await fetch(`http://localhost:3000/users/reviews`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:3000/users/${userId}/reviews`,
+        {
+          credentials: "include",
+        }
+      );
       const jsonData = await response.json();
       setUserReviews(jsonData.userReviews);
     } catch (err: unknown) {
@@ -57,28 +78,32 @@ function Profile() {
   }
 
   useEffect(() => {
+    getUser();
     getUserReviews();
   }, []);
 
   return (
     <>
-      <Link
-        to="/restaurants"
+      <button
+        onClick={() => navigate(-1)}
         className="px-24 font-inter font-black text-sm breadcrumbs"
       >
         {"< Back"}
-      </Link>
+      </button>
       <div className="flex px-24 py-8 text-2xl">
         <div className="flex flex-col items-center w-1/3">
           <Avatar iconStyle={iconStyle} />
           <h1 className="my-4 text-3xl font-inter font-black">
-            {user.username}
+            {profileUser.username}
           </h1>
+          {user.id != profileUser.id ? (
+            <button className="btn btn-md">Add Friend</button>
+          ) : null}
 
           <ul className="menu mt-12 w-fit sticky top-48">
             <li>
               <button
-                onClick={(e) => handleProfileScroll(e)}
+                onClick={() => handleProfileScroll()}
                 className="font-inter text-2xl"
               >
                 Profile
@@ -86,7 +111,7 @@ function Profile() {
             </li>
             <li>
               <button
-                onClick={(e) => handleFriendsScroll(e)}
+                onClick={() => handleFriendsScroll()}
                 className="font-inter text-2xl"
               >
                 Friends
@@ -94,7 +119,7 @@ function Profile() {
             </li>
             <li>
               <button
-                onClick={(e) => handleReviewsScroll(e)}
+                onClick={() => handleReviewsScroll()}
                 className="font-inter text-2xl"
               >
                 Reviews

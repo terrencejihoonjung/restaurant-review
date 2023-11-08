@@ -106,6 +106,12 @@ export const getLikes = async (req, res) => {
     const { reviewId } = req.params;
     const { id } = req.session.user;
 
+    // Grab all users that liked the review
+    const usersWhoLikedReview = await pool.query(
+      "SELECT users.id, username FROM users JOIN likes ON users.id = likes.user_id JOIN reviews ON likes.review_id = reviews.id WHERE review_id = $1",
+      [reviewId]
+    );
+
     // Check if user + reviewId row exists in likes table
     const userLike = await pool.query(
       "SELECT * FROM likes WHERE review_id = $1 AND user_id = $2",
@@ -114,12 +120,17 @@ export const getLikes = async (req, res) => {
 
     if (userLike.rows.length < 1) {
       return res.json({
+        likers: usersWhoLikedReview.rows,
         liked: false,
         message: "The user did not like this review",
       });
     }
 
-    res.json({ liked: true, message: "The user liked this review" });
+    res.json({
+      likers: usersWhoLikedReview.rows,
+      liked: true,
+      message: "The user liked this review",
+    });
   } catch (err) {
     console.error(err);
   }
