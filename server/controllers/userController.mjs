@@ -216,7 +216,7 @@ export const checkFriendStatus = async (req, res) => {
     );
 
     if (friendship.rows.length == 2) {
-      return res.json({ status: "accepted" });
+      return res.json({ status: "friends" });
     } else if (friendship.rows.length == 0) {
       return res.json({ status: "add" });
     }
