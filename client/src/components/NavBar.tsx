@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUsersContext, User } from "../context/UsersContext";
 import Socials from "./Socials";
 import Avatar from "./Avatar";
+import Notifications from "./Notifications";
 
 type NavBarProps = {
   setToastToggle: (toastToggle: boolean) => void;
@@ -46,9 +47,9 @@ function NavBar({ setToastToggle }: NavBarProps) {
       </div>
 
       <div className="flex items-center">
-        <Socials />
         {user.id ? (
           <>
+            <Notifications />
             <Link to={`/profile/${user.id}`} className="flex items-center mx-2">
               <Avatar iconStyle={iconStyle} />
             </Link>
@@ -60,7 +61,8 @@ function NavBar({ setToastToggle }: NavBarProps) {
               Logout
             </button>
           </>
-        ) : null}
+        ) : null}{" "}
+        <Socials />
       </div>
     </div>
   );

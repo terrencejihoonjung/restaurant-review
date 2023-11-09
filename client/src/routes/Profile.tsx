@@ -80,7 +80,7 @@ function Profile() {
   useEffect(() => {
     getUser();
     getUserReviews();
-  }, []);
+  }, [userId]);
 
   return (
     <>
