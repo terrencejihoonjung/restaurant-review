@@ -120,9 +120,108 @@ export const getUser = async (req, res) => {
     const existingUser = await pool.query("SELECT * FROM users WHERE id = $1", [
       userId,
     ]);
-    if (existingUser.rows < 1)
+    if (existingUser.rows.length < 1)
       return res.status(400).json({ message: "User not found" });
     res.json({ user: existingUser.rows[0], message: "User Found" });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const sendRequest = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { id } = req.session.user;
+
+    // Check if request already exists
+    const existingRequest = await pool.query(
+      "SELECT * FROM friends WHERE requester_id = $1 AND receiver_id = $2",
+      [id, userId]
+    );
+
+    if (existingRequest.rows.length > 0) {
+      return res.status(400).json({ message: "Friend Request already sent" });
+    }
+
+    // Insert new friend request
+    await pool.query(
+      "INSERT INTO friends (requester_id, receiver_id, status) VALUES ($1, $2, $3)",
+      [id, userId, "pending"]
+    );
+    res.json({ message: "Friend Request Sent" });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const acceptRequest = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { id } = req.session.user;
+
+    // Check if a request did exist
+    const existingRequest = await pool.query(
+      "SELECT * FROM friends WHERE requester_id = $1 AND receiver_id = $2",
+      [userId, id]
+    );
+
+    if (existingRequest.rows.length == 0) {
+      return res.status(400).json("There is no friend request to accept");
+    }
+
+    // Change Status of request row to accepted
+    await pool.query(
+      "UPDATE friends SET status = $1, created_at = $2 WHERE requester_id = $3 AND receiver_id = $4",
+      ["accepted", new Date(), userId, id]
+    );
+
+    // Insert row into friends to complete friendship
+    await pool.query(
+      "INSERT INTO friends (requester_id, receiver_id, status) VALUES ($1, $2, $3)",
+      [id, userId, "accepted"]
+    );
+
+    res.json({ message: "Friend Request Accepted" });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const removeFriend = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { id } = req.session.user;
+
+    await pool.query(
+      "DELETE FROM friends WHERE requester_id = $1 AND receiver_id = $2 OR requester_id = $2 AND receiver_id = $1",
+      [userId, id]
+    );
+
+    res.json({ message: "You are no longer friends" });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const checkFriendStatus = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { id } = req.session.user;
+
+    console.log(userId, id);
+    // Grab rows from friends
+    const friendship = await pool.query(
+      "SELECT * FROM friends WHERE requester_id = $1 AND receiver_id = $2 OR requester_id = $2 AND receiver_id = $1",
+      [userId, id]
+    );
+
+    if (friendship.rows.length == 2) {
+      return res.json({ status: "accepted" });
+    } else if (friendship.rows.length == 0) {
+      return res.json({ status: "add" });
+    }
+
+    res.json({ status: "pending", requester: friendship.rows[0].requester_id });
   } catch (err) {
     console.error(err);
   }

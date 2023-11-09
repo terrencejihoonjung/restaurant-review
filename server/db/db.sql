@@ -30,3 +30,13 @@ CREATE TABLE Likes (
     user_id BIGINT NOT NULL REFERENCES users(id),
     review_id BIGINT NOT NULL REFERENCES reviews(id)
 );
+
+/* Create Friendship Table */
+CREATE TABLE friends (
+    id SERIAL PRIMARY KEY,
+    requester_id BIGINT NOT NULL REFERENCES users(id),
+    receiver_id BIGINT NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT unique_friendship UNIQUE (requester_id, receiver_id)
+);

@@ -11,6 +11,9 @@ const iconStyle: string = "w-64 rounded-full";
 
 function Profile() {
   const [profileUser, setProfileUser] = useState<User>({} as User);
+  const [friendStatus, setFriendStatus] = useState<
+    "add" | "pending" | "accept" | "friends"
+  >("add");
   const { user } = useUsersContext();
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -23,6 +26,87 @@ function Profile() {
   const totalLikes = userReviews.reduce((count, review) => {
     return count + review.likes;
   }, 0);
+
+  const buttonText = (() => {
+    switch (friendStatus) {
+      case "add":
+        return "Add Friend";
+      case "pending":
+        return "Pending Request";
+      case "accept":
+        return "Accept Request";
+      case "friends":
+        return "Friends";
+      default:
+        return "Unknown Status";
+    }
+  })();
+
+  async function checkFriendStatus() {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/friends/${userId}`,
+        { credentials: "include" }
+      );
+      const jsonData = await response.json();
+      if (jsonData.status == "pending") {
+        if (jsonData.requester == profileUser.id) setFriendStatus("pending");
+        else setFriendStatus("accept");
+      } else {
+        setFriendStatus(jsonData.status);
+      }
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  }
+
+  async function sendFriendRequest() {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/friends/request/${userId}`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        setFriendStatus("pending");
+      }
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  }
+
+  async function acceptFriendRequest() {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/friends/accept/${userId}`,
+        { method: "POST", credentials: "include" }
+      );
+
+      if (response.ok) {
+        setFriendStatus("friends");
+      }
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  }
+
+  async function removeFriend() {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/friends/remove/${userId}`,
+        { method: "DELETE", credentials: "include" }
+      );
+
+      if (response.ok) {
+        setFriendStatus("add");
+      }
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  }
 
   async function getUser() {
     try {
@@ -80,6 +164,9 @@ function Profile() {
   useEffect(() => {
     getUser();
     getUserReviews();
+    if (user.id != profileUser.id) {
+      checkFriendStatus();
+    }
   }, [userId]);
 
   return (
@@ -97,7 +184,33 @@ function Profile() {
             {profileUser.username}
           </h1>
           {user.id != profileUser.id ? (
-            <button className="btn btn-md">Add Friend</button>
+            <button
+              disabled={friendStatus == "pending" || friendStatus == "friends"}
+              onClick={() => sendFriendRequest()}
+              className="btn btn-md"
+            >
+              {buttonText}
+            </button>
+          ) : null}
+
+          {friendStatus == "accept" ? (
+            <>
+              <button
+                onClick={() => acceptFriendRequest()}
+                className="btn btn-md"
+              >
+                Accept
+              </button>
+              <button onClick={() => removeFriend()} className="btn btn-md">
+                Decline
+              </button>
+            </>
+          ) : null}
+
+          {friendStatus == "friends" ? (
+            <button onClick={() => removeFriend()} className="btn btn-md">
+              Remove Friend
+            </button>
           ) : null}
 
           <ul className="menu mt-12 w-fit sticky top-48">
