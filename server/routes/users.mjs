@@ -11,6 +11,7 @@ import {
   removeFriend,
   checkFriendStatus,
 } from "../controllers/userController.mjs";
+import verifyUser from "../middleware/verifyUser.mjs";
 
 const router = express.Router();
 

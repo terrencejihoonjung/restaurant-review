@@ -1,8 +1,8 @@
-const verifyUser = async (req, res) => {
+const verifyUser = (req, res, next) => {
   if (!req.session.user) {
-    return res.json({ isLoggedIn: false, message: "User Unauthorized" });
+    return res.status(400).json({ isLoggedIn: false });
   }
-
+  req.session.touch();
   next();
 };
 

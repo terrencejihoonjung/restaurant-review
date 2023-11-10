@@ -79,7 +79,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    req.session.user = null;
+    req.session.destroy();
     res.json({ message: "User Logged Out" });
   } catch (err) {
     console.error(err);
@@ -89,10 +89,9 @@ export const logout = async (req, res) => {
 export const checkAuth = async (req, res) => {
   try {
     if (!req.session.user) {
-      res.send({ isLoggedIn: false });
+      res.json({ isLoggedIn: false });
     } else {
-      req.session.save();
-      res.send({ isLoggedIn: true, user: req.session.user });
+      res.json({ isLoggedIn: true, user: req.session.user });
     }
   } catch (err) {
     console.error(err);
@@ -117,12 +116,27 @@ export const getUserReviews = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const { userId } = req.params;
+
+    // Check if user exists
     const existingUser = await pool.query("SELECT * FROM users WHERE id = $1", [
       userId,
     ]);
-    if (existingUser.rows.length < 1)
+
+    if (existingUser.rows.length < 1) {
       return res.status(400).json({ message: "User not found" });
-    res.json({ user: existingUser.rows[0], message: "User Found" });
+    }
+
+    // Grab User Friends
+    const friends = await pool.query(
+      "SELECT username, u.id FROM users u JOIN friends f ON u.id = f.requester_id OR u.id = f.receiver_id WHERE (f.requester_id = $1 OR f.receiver_id = $1) AND f.status = 'accepted' AND u.id != $1 AND f.requester_id < f.receiver_id",
+      [userId]
+    );
+
+    res.json({
+      user: existingUser.rows[0],
+      friends: friends.rows,
+      message: "User Found",
+    });
   } catch (err) {
     console.error(err);
   }
@@ -208,7 +222,6 @@ export const checkFriendStatus = async (req, res) => {
     const { userId } = req.params;
     const { id } = req.session.user;
 
-    console.log(userId, id);
     // Grab rows from friends
     const friendship = await pool.query(
       "SELECT * FROM friends WHERE requester_id = $1 AND receiver_id = $2 OR requester_id = $2 AND receiver_id = $1",
@@ -216,12 +229,15 @@ export const checkFriendStatus = async (req, res) => {
     );
 
     if (friendship.rows.length == 2) {
-      return res.json({ status: "friends" });
+      return res.json({ status: "Friends" });
     } else if (friendship.rows.length == 0) {
-      return res.json({ status: "add" });
+      return res.json({ status: "Add Friend" });
     }
 
-    res.json({ status: "pending", requester: friendship.rows[0].requester_id });
+    res.json({
+      status: "Pending Request",
+      requester: friendship.rows[0].requester_id,
+    });
   } catch (err) {
     console.error(err);
   }

@@ -11,14 +11,21 @@ const iconStyle: string = "w-64 rounded-full";
 
 function Profile() {
   const [profileUser, setProfileUser] = useState<User>({} as User);
+  const [userReviews, setUserReviews] = useState<Review[]>([] as Review[]);
+  const [friends, setFriends] = useState<User[]>([] as User[]);
+
   const [friendStatus, setFriendStatus] = useState<
-    "add" | "pending" | "accept" | "friends" | "unknown status"
-  >("add");
+    | "Add Friend"
+    | "Pending Request"
+    | "Accept Request"
+    | "Friends"
+    | "Unknown Status"
+  >("Add Friend");
+
   const { user } = useUsersContext();
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  const [userReviews, setUserReviews] = useState<Review[]>([] as Review[]);
   const profileRef: React.RefObject<HTMLInputElement> = useRef(null);
   const friendsRef: React.RefObject<HTMLInputElement> = useRef(null);
   const reviewsRef: React.RefObject<HTMLInputElement> = useRef(null);
@@ -27,21 +34,6 @@ function Profile() {
     return count + review.likes;
   }, 0);
 
-  const buttonText = (() => {
-    switch (friendStatus) {
-      case "add":
-        return "Add Friend";
-      case "pending":
-        return "Pending Request";
-      case "accept":
-        return "Accept Request";
-      case "friends":
-        return "Friends";
-      default:
-        return "unknown status";
-    }
-  })();
-
   async function checkFriendStatus() {
     try {
       const response = await fetch(
@@ -49,10 +41,11 @@ function Profile() {
         { credentials: "include" }
       );
       const jsonData = await response.json();
-      if (jsonData.status == "pending") {
-        if (jsonData.requester == user.id) setFriendStatus("pending");
-        else setFriendStatus("accept");
+      if (jsonData.status == "Pending Request") {
+        if (jsonData.requester == user.id) setFriendStatus("Pending Request");
+        else setFriendStatus("Accept Request");
       } else {
+        console.log(jsonData.status);
         setFriendStatus(jsonData.status);
       }
     } catch (err: unknown) {
@@ -71,7 +64,7 @@ function Profile() {
       );
 
       if (response.ok) {
-        setFriendStatus("pending");
+        setFriendStatus("Pending Request");
       }
     } catch (err: unknown) {
       console.error(err);
@@ -86,7 +79,7 @@ function Profile() {
       );
 
       if (response.ok) {
-        setFriendStatus("friends");
+        setFriendStatus("Friends");
       }
     } catch (err: unknown) {
       console.error(err);
@@ -101,7 +94,7 @@ function Profile() {
       );
 
       if (response.ok) {
-        setFriendStatus("add");
+        setFriendStatus("Add Friend");
       }
     } catch (err: unknown) {
       console.error(err);
@@ -116,6 +109,7 @@ function Profile() {
       if (response.ok) {
         const jsonData = await response.json();
         setProfileUser(jsonData.user);
+        setFriends(jsonData.friends);
       }
     } catch (err: unknown) {
       console.error(err);
@@ -162,11 +156,9 @@ function Profile() {
   }
 
   useEffect(() => {
+    checkFriendStatus();
     getUser();
     getUserReviews();
-    if (user.id != profileUser.id) {
-      checkFriendStatus();
-    }
   }, [userId]);
 
   return (
@@ -188,19 +180,19 @@ function Profile() {
             {user.id != profileUser.id ? (
               <button
                 disabled={
-                  friendStatus == "pending" ||
-                  friendStatus == "friends" ||
-                  friendStatus == "accept" ||
-                  friendStatus == "unknown status"
+                  friendStatus == "Pending Request" ||
+                  friendStatus == "Friends" ||
+                  friendStatus == "Accept Request" ||
+                  friendStatus == "Unknown Status"
                 }
                 onClick={() => sendFriendRequest()}
                 className="btn btn-md"
               >
-                {buttonText}
+                {friendStatus}
               </button>
             ) : null}
 
-            {friendStatus == "accept" ? (
+            {friendStatus == "Accept Request" ? (
               <>
                 <button
                   onClick={() => acceptFriendRequest()}
@@ -243,7 +235,7 @@ function Profile() {
               </>
             ) : null}
 
-            {friendStatus == "friends" ? (
+            {friendStatus == "Friends" ? (
               <button onClick={() => removeFriend()} className="btn btn-md">
                 Remove Friend
               </button>
@@ -279,11 +271,12 @@ function Profile() {
         </div>
         <div className="w-2/3">
           <ProfileStats
+            numFriends={friends.length}
             profileRef={profileRef}
             userReviewsLength={userReviews.length}
             totalLikes={totalLikes}
           />
-          <ProfileFriends friendsRef={friendsRef} />
+          <ProfileFriends friends={friends} friendsRef={friendsRef} />
           <ProfileReviews reviewsRef={reviewsRef} reviews={userReviews} />
         </div>
       </div>

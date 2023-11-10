@@ -5,10 +5,16 @@ type ProfileStatsProps = {
   profileRef: React.RefObject<HTMLInputElement>;
   userReviewsLength: number;
   totalLikes: number;
+  numFriends: number;
 };
 
 const ProfileStats = forwardRef(
-  ({ profileRef, userReviewsLength, totalLikes }: ProfileStatsProps) => {
+  ({
+    profileRef,
+    userReviewsLength,
+    totalLikes,
+    numFriends: numFriends,
+  }: ProfileStatsProps) => {
     return (
       <>
         <div
@@ -62,7 +68,7 @@ const ProfileStats = forwardRef(
               </svg>
             </div>
             <div className="stat-title">Friends</div>
-            <div className="stat-value">12</div>
+            <div className="stat-value">{numFriends}</div>
           </div>
         </div>
       </>

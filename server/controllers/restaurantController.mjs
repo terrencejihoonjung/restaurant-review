@@ -73,10 +73,6 @@ export const deleteRestaurant = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await pool.query("DELETE FROM reviews WHERE reviews.restaurant_id = $1", [
-      id,
-    ]);
-
     const restaurant = await pool.query(
       "DELETE FROM restaurants WHERE id = $1 RETURNING *",
       [id]

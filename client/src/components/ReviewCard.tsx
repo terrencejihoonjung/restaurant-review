@@ -88,7 +88,7 @@ function ReviewCard({ review }: ReviewProps) {
 
   useEffect(() => {
     checkIfUserLiked();
-  }, []);
+  }, [currentLikeCount]);
 
   return (
     <>

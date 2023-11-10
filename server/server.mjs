@@ -6,30 +6,47 @@ import users from "./routes/users.mjs";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import verifyUser from "./middleware/verifyUser.mjs";
+// import RedisStore from "connect-redis";
+// import { createClient } from "redis";
 
 dotenv.config();
 const app = express();
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
+
+// cross-origin-resource-sharing
 app.use(
   cors({
     origin: "http://localhost:5173", // Replace with your front-end's URL
     credentials: true,
   })
-); // cross-origin-resource-sharing
+);
 app.use(cookieParser()); // Parse incoming cookies from client
+
+// // Connect to Redis
+// const redisClient = createClient({
+//   host: "localhost", // Redis server host
+//   port: 6379, // Redis server port
+// });
+
+// redisClient.on("error", (err) => {
+//   console.error("Redis error:", err);
+// });
+
+// // Enable sessions for user auth
+// const redisStore = new RedisStore({ client: redisClient });
+
 app.use(
   session({
     key: "current_user",
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     credentials: true,
-    cookie: { maxAge: 3600000 / 4 }, // Session duration: 1 hour
+    cookie: { maxAge: 3600000 / 6 }, // Session duration: 1 hour
   })
-); // Enable sessions for user auth
+);
 
 app.use("/users", users);
 app.use("/restaurants", restaurants);

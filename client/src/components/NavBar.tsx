@@ -49,7 +49,7 @@ function NavBar({ setToastToggle }: NavBarProps) {
       <div className="flex items-center">
         {user.id ? (
           <>
-            <Notifications />
+            {/* <Notifications /> */}
             <Link to={`/profile/${user.id}`} className="flex items-center mx-2">
               <Avatar iconStyle={iconStyle} />
             </Link>
