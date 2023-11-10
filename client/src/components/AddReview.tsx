@@ -36,13 +36,17 @@ function AddReview() {
         `http://localhost:3000/restaurants/${id}/reviews`,
         {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(reviewBody),
         }
       );
-      const jsonData = await response.json();
-      setReviews([...reviews, jsonData]);
-      window.location.reload();
+
+      if (response.ok) {
+        const jsonData = await response.json();
+        setReviews([...reviews, jsonData.review]);
+        window.location.reload();
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

@@ -6,8 +6,8 @@ import users from "./routes/users.mjs";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-// import RedisStore from "connect-redis";
-// import { createClient } from "redis";
+import RedisStore from "connect-redis";
+import { createClient } from "redis";
 
 dotenv.config();
 const app = express();
@@ -24,21 +24,23 @@ app.use(
 );
 app.use(cookieParser()); // Parse incoming cookies from client
 
-// // Connect to Redis
-// const redisClient = createClient({
-//   host: "localhost", // Redis server host
-//   port: 6379, // Redis server port
-// });
+// Connect to Redis
+const redisClient = createClient({
+  host: "localhost", // Redis server host
+  port: 6379, // Redis server port
+});
 
-// redisClient.on("error", (err) => {
-//   console.error("Redis error:", err);
-// });
+redisClient.on("error", (err) => {
+  console.error("Redis error:", err);
+});
 
-// // Enable sessions for user auth
-// const redisStore = new RedisStore({ client: redisClient });
+// Enable sessions for user auth
+const redisStore = new RedisStore({ client: redisClient });
+redisClient.connect().catch(console.error);
 
 app.use(
   session({
+    store: redisStore,
     key: "current_user",
     secret: process.env.SESSION_SECRET,
     resave: false,

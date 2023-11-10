@@ -51,7 +51,9 @@ function RestaurantList() {
 
   async function getRestaurants() {
     try {
-      const response = await fetch("http://localhost:3000/restaurants");
+      const response = await fetch("http://localhost:3000/restaurants", {
+        credentials: "include",
+      });
       const jsonData = await response.json();
       setRestaurants(jsonData.data);
     } catch (err: unknown) {
@@ -75,6 +77,7 @@ function RestaurantList() {
     try {
       await fetch(`http://localhost:3000/restaurants/${id}`, {
         method: "DELETE",
+        credentials: "include",
       });
       setRestaurants(restaurants.filter((restaurant) => restaurant.id !== id));
     } catch (err) {

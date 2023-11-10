@@ -34,6 +34,7 @@ function UpdateRestaurant() {
       const body = { name, location, price_range: priceRange };
       await fetch(`http://localhost:3000/restaurants/${id}`, {
         method: "PUT",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });

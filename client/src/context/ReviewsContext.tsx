@@ -5,7 +5,7 @@ export type Review = {
   rating: number;
   review: string;
   date: Date;
-  user_id: number;
+  readonly user_id: number;
   author: string;
   likes: number;
   readonly id: number;
@@ -23,7 +23,7 @@ export type SortedReviewProps = {
 
 export type ReviewProps = {
   reviews: Review[];
-  setReviews?: (reviews: Review[]) => void;
+  setReviews: (reviews: Review[]) => void;
 };
 
 export const ReviewsContext = createContext<ReviewProps>({

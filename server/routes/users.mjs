@@ -17,15 +17,15 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/login", checkAuth);
-router.post("/logout", logout);
+router.get("/login", verifyUser, checkAuth);
+router.post("/logout", verifyUser, logout);
 
-router.get("/:userId/reviews", getUserReviews);
-router.get("/:userId", getUser);
+router.get("/:userId/reviews", verifyUser, getUserReviews);
+router.get("/:userId", verifyUser, getUser);
 
-router.post("/friends/request/:userId", sendRequest);
-router.post("/friends/accept/:userId", acceptRequest);
-router.delete("/friends/remove/:userId", removeFriend);
-router.get("/friends/:userId", checkFriendStatus);
+router.post("/friends/request/:userId", verifyUser, sendRequest);
+router.post("/friends/accept/:userId", verifyUser, acceptRequest);
+router.delete("/friends/remove/:userId", verifyUser, removeFriend);
+router.get("/friends/:userId", verifyUser, checkFriendStatus);
 
 export default router;

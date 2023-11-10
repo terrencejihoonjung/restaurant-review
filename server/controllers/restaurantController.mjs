@@ -91,7 +91,7 @@ export const addRestaurantReview = async (req, res) => {
       "INSERT INTO reviews (restaurant_id, name, review, rating, date, user_id, author) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [id, name, review, rating, new Date(), user_id, author]
     );
-    res.json(addedReview.rows[0]);
+    res.json({ review: addedReview.rows[0] });
   } catch (err) {
     console.error(err);
   }

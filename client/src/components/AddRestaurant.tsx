@@ -31,6 +31,7 @@ function AddRestaurant() {
 
       const response = await fetch("http://localhost:3000/restaurants", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
