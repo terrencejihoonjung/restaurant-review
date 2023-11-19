@@ -7,10 +7,22 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import RedisStore from "connect-redis";
+import https from "https";
 import { createClient } from "redis";
 
 dotenv.config();
 const app = express();
+
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com/fullchain.pem",
+  "utf8"
+);
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com/privkey.pem",
+  "utf8"
+);
+const credentials = { key: privateKey, cert: certificate };
+const httpsServer = https.createServer(credentials, app);
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
@@ -18,7 +30,7 @@ app.use(morgan("dev")); // third-party logger
 // cross-origin-resource-sharing
 app.use(
   cors({
-    origin: "http://restaurant-review-eight.vercel.app", // Replace with your front-end's URL
+    origin: "https://restaurant-review-eight.vercel.app", // Replace with your front-end's URL
     credentials: true,
   })
 );
@@ -54,6 +66,6 @@ app.use("/users", users);
 app.use("/restaurants", restaurants);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+httpsServer.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
