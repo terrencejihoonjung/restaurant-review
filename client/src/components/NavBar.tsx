@@ -15,7 +15,7 @@ function NavBar({ setToastToggle }: NavBarProps) {
 
   async function handleLogout() {
     try {
-      const response = await fetch("https://54.67.56.212:3000/users/logout", {
+      const response = await fetch("http://54.67.56.212:3000/users/logout", {
         method: "POST",
         credentials: "include",
       });
