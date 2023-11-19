@@ -21,7 +21,7 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
       validateRegisterInput(username, email, password);
 
       const body = { username, email, password };
-      const response = await fetch("http://54.67.56.212:3000/users/register", {
+      const response = await fetch("https://54.67.56.212:3000/users/register", {
         method: "POST",
         credentials: "include",
         headers: {
