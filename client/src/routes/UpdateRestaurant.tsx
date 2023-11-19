@@ -12,9 +12,12 @@ function UpdateRestaurant() {
 
   async function getRestaurant() {
     try {
-      const response = await fetch(`http://localhost:3000/restaurants/${id}`, {
-        method: "GET",
-      });
+      const response = await fetch(
+        `http://54.67.56.212:3000/restaurants/${id}`,
+        {
+          method: "GET",
+        }
+      );
       const jsonData = await response.json();
       setName(jsonData.data.restaurant.name);
       setLocation(jsonData.data.restaurant.location);
@@ -32,7 +35,7 @@ function UpdateRestaurant() {
       }
 
       const body = { name, location, price_range: priceRange };
-      await fetch(`http://localhost:3000/restaurants/${id}`, {
+      await fetch(`http://54.67.56.212:3000/restaurants/${id}`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

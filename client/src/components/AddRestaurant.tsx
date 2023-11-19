@@ -29,7 +29,7 @@ function AddRestaurant() {
         price_range: priceRange,
       };
 
-      const response = await fetch("http://localhost:3000/restaurants", {
+      const response = await fetch("http://54.67.56.212:3000/restaurants", {
         method: "POST",
         credentials: "include",
         headers: {

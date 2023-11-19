@@ -51,7 +51,7 @@ function RestaurantList() {
 
   async function getRestaurants() {
     try {
-      const response = await fetch("http://localhost:3000/restaurants", {
+      const response = await fetch("http://54.67.56.212:3000/restaurants", {
         credentials: "include",
       });
       const jsonData = await response.json();
@@ -75,7 +75,7 @@ function RestaurantList() {
   ) {
     e.stopPropagation();
     try {
-      await fetch(`http://localhost:3000/restaurants/${id}`, {
+      await fetch(`http://54.67.56.212:3000/restaurants/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

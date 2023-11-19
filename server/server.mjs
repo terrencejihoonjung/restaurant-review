@@ -18,7 +18,7 @@ app.use(morgan("dev")); // third-party logger
 // cross-origin-resource-sharing
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your front-end's URL
+    origin: "http://54.67.56.212:5173", // Replace with your front-end's URL
     credentials: true,
   })
 );
@@ -26,7 +26,7 @@ app.use(cookieParser()); // Parse incoming cookies from client
 
 // Connect to Redis
 const redisClient = createClient({
-  host: "localhost", // Redis server host
+  host: "54.67.56.212", // Redis server host
   port: 6379, // Redis server port
 });
 
