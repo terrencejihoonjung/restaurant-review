@@ -33,7 +33,7 @@ function AddReview() {
       };
 
       const response = await fetch(
-        `http://54.67.56.212:3000/restaurants/${id}/reviews`,
+        `https://54.67.56.212:3000/restaurants/${id}/reviews`,
         {
           method: "POST",
           credentials: "include",
