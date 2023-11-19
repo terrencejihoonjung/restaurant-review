@@ -18,7 +18,7 @@ app.use(morgan("dev")); // third-party logger
 // cross-origin-resource-sharing
 app.use(
   cors({
-    origin: "https://restaurant-review-eight.vercel.app/", // Replace with your front-end's URL
+    origin: "http://restaurant-review-eight.vercel.app/", // Replace with your front-end's URL
     credentials: true,
   })
 );
