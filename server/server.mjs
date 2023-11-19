@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import RedisStore from "connect-redis";
 import https from "https";
+import fs from "fs";
 import { createClient } from "redis";
 
 dotenv.config();
