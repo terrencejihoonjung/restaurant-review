@@ -5,7 +5,7 @@
   "main": "server.mjs",
   "type": "module",
   "scripts": {
-    "start": "concurrently \"redis-server\" \"nodemon server.mjs\""
+    "start": "redis-server & nodemon server.mjs"
   },
   "keywords": [],
   "author": "",
