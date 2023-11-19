@@ -20,14 +20,8 @@ console.log("GID:", process.getgid()); // Group ID
 dotenv.config();
 const app = express();
 
-const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com/fullchain.pem",
-  "utf8"
-);
-const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com/privkey.pem",
-  "utf8"
-);
+const certificate = fs.readFileSync("/home/ssh/fullchain.pem", "utf8");
+const privateKey = fs.readFileSync("/home/ssh/privkey.pem", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
