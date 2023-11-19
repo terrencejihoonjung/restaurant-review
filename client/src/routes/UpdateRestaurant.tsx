@@ -13,7 +13,7 @@ function UpdateRestaurant() {
   async function getRestaurant() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/restaurants/${id}`,
+        `https://restaurant-review-jihoon.com/restaurants/${id}`,
         {
           method: "GET",
         }
@@ -35,7 +35,7 @@ function UpdateRestaurant() {
       }
 
       const body = { name, location, price_range: priceRange };
-      await fetch(`https://54.67.56.212:3000/restaurants/${id}`, {
+      await fetch(`https://restaurant-review-jihoon.com/restaurants/${id}`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

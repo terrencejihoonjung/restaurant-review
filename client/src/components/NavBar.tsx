@@ -15,10 +15,13 @@ function NavBar({ setToastToggle }: NavBarProps) {
 
   async function handleLogout() {
     try {
-      const response = await fetch("https://54.67.56.212:3000/users/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://restaurant-review-jihoon.com/users/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         setUser({} as User);
         navigate("/users");

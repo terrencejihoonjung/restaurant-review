@@ -29,14 +29,17 @@ function AddRestaurant() {
         price_range: priceRange,
       };
 
-      const response = await fetch("https://54.67.56.212:3000/restaurants", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        "https://restaurant-review-jihoon.com/restaurants",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
       const jsonData = await response.json();
       console.log(jsonData);
       setRestaurants([...restaurants, jsonData]);

@@ -51,9 +51,12 @@ function RestaurantList() {
 
   async function getRestaurants() {
     try {
-      const response = await fetch("https://54.67.56.212:3000/restaurants", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://restaurant-review-jihoon.com/restaurants",
+        {
+          credentials: "include",
+        }
+      );
       const jsonData = await response.json();
       setRestaurants(jsonData.data);
     } catch (err: unknown) {
@@ -75,7 +78,7 @@ function RestaurantList() {
   ) {
     e.stopPropagation();
     try {
-      await fetch(`https://54.67.56.212:3000/restaurants/${id}`, {
+      await fetch(`https://restaurant-review-jihoon.com/restaurants/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

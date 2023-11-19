@@ -21,9 +21,12 @@ function App() {
 
   async function getUser() {
     try {
-      const response = await fetch("https://54.67.56.212:3000/users/login", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://restaurant-review-jihoon.com/users/login",
+        {
+          credentials: "include",
+        }
+      );
       const jsonData = await response.json();
 
       if (jsonData.isLoggedIn) {

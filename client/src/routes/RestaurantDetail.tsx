@@ -34,7 +34,7 @@ function RestaurantDetail() {
   async function getRestaurant() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/restaurants/${id}`,
+        `https://restaurant-review-jihoon.com/restaurants/${id}`,
         {
           method: "GET",
           credentials: "include",

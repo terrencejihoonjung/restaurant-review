@@ -37,7 +37,7 @@ function Profile() {
   async function checkFriendStatus() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/users/friends/${userId}`,
+        `https://restaurant-review-jihoon.com/users/friends/${userId}`,
         { credentials: "include" }
       );
       const jsonData = await response.json();
@@ -56,7 +56,7 @@ function Profile() {
   async function sendFriendRequest() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/users/friends/request/${userId}`,
+        `https://restaurant-review-jihoon.com/users/friends/request/${userId}`,
         {
           method: "POST",
           credentials: "include",
@@ -74,7 +74,7 @@ function Profile() {
   async function acceptFriendRequest() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/users/friends/accept/${userId}`,
+        `https://restaurant-review-jihoon.com/users/friends/accept/${userId}`,
         { method: "POST", credentials: "include" }
       );
 
@@ -89,7 +89,7 @@ function Profile() {
   async function removeFriend() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/users/friends/remove/${userId}`,
+        `https://restaurant-review-jihoon.com/users/friends/remove/${userId}`,
         { method: "DELETE", credentials: "include" }
       );
 
@@ -104,7 +104,7 @@ function Profile() {
   async function getUser() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/users/${userId}`,
+        `https://restaurant-review-jihoon.com/users/${userId}`,
         {
           credentials: "include",
         }
@@ -146,7 +146,7 @@ function Profile() {
   async function getUserReviews() {
     try {
       const response = await fetch(
-        `https://54.67.56.212:3000/users/${userId}/reviews`,
+        `https://restaurant-review-jihoon.com/users/${userId}/reviews`,
         {
           credentials: "include",
         }
