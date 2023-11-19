@@ -12,7 +12,7 @@ function LoginUser({ setToastToggle }: LoginProps) {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { user, setUser } = useUsersContext();
+  const { setUser } = useUsersContext();
 
   async function handleLogin() {
     try {

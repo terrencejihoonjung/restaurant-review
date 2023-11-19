@@ -14,7 +14,7 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { user, setUser } = useUsersContext();
+  const { setUser } = useUsersContext();
 
   async function handleRegister() {
     try {
