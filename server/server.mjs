@@ -32,6 +32,10 @@ const ca = fs.readFileSync(
   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0001/chain.pem",
   "utf8"
 );
+
+console.log("Certificate:", certificate);
+console.log("Private Key:", privateKey);
+console.log("CA:", ca);
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 const httpsServer = https.createServer(credentials, app);
 
@@ -69,7 +73,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     credentials: true,
-    cookie: { maxAge: 3600000 / 6 }, // Session duration: 1 hour
+    cookie: { secure: true, maxAge: 3600000 / 6 }, // Session duration: 1 hour
   })
 );
 
