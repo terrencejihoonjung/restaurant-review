@@ -10,6 +10,12 @@ import RedisStore from "connect-redis";
 import https from "https";
 import fs from "fs";
 import { createClient } from "redis";
+import process from "process";
+
+// Log the user information
+console.log("User:", process.env.USER); // User account name
+console.log("UID:", process.getuid()); // User ID
+console.log("GID:", process.getgid()); // Group ID
 
 dotenv.config();
 const app = express();
