@@ -21,21 +21,18 @@ dotenv.config();
 const app = express();
 
 const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0001/cert.pem",
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
   "utf8"
 );
 const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0001/privkey.pem",
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
   "utf8"
 );
 const ca = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0001/chain.pem",
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
   "utf8"
 );
 
-console.log("Certificate:", certificate);
-console.log("Private Key:", privateKey);
-console.log("CA:", ca);
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 const httpsServer = https.createServer(credentials, app);
 
