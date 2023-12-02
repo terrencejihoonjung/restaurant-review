@@ -7,10 +7,34 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import RedisStore from "connect-redis";
+import https from "https";
+import fs from "fs";
 import { createClient } from "redis";
+import process from "process";
+
+// Log the user information
+// console.log("User:", process.env.USER); // User account name
+// console.log("UID:", process.getuid()); // User ID
+// console.log("GID:", process.getgid()); // Group ID
 
 dotenv.config();
 const app = express();
+
+// const certificate = fs.readFileSync(
+//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
+//   "utf8"
+// );
+// const privateKey = fs.readFileSync(
+//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
+//   "utf8"
+// );
+// const ca = fs.readFileSync(
+//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
+//   "utf8"
+// );
+
+// const credentials = { key: privateKey, cert: certificate, ca: ca };
+// const httpsServer = https.createServer(credentials, app);
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
@@ -43,10 +67,10 @@ app.use(
     store: redisStore,
     key: "current_user",
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     credentials: true,
-    cookie: { maxAge: 3600000 / 6 }, // Session duration: 1 hour
+    cookie: { secure: true, maxAge: 3600000 / 6 }, // Session duration: 1 hour
   })
 );
 
