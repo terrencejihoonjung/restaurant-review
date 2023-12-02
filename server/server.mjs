@@ -13,28 +13,28 @@ import { createClient } from "redis";
 import process from "process";
 
 // Log the user information
-// console.log("User:", process.env.USER); // User account name
-// console.log("UID:", process.getuid()); // User ID
-// console.log("GID:", process.getgid()); // Group ID
+console.log("User:", process.env.USER); // User account name
+console.log("UID:", process.getuid()); // User ID
+console.log("GID:", process.getgid()); // Group ID
 
 dotenv.config();
 const app = express();
 
-// const certificate = fs.readFileSync(
-//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
-//   "utf8"
-// );
-// const privateKey = fs.readFileSync(
-//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
-//   "utf8"
-// );
-// const ca = fs.readFileSync(
-//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
-//   "utf8"
-// );
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
+  "utf8"
+);
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
+  "utf8"
+);
+const ca = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
+  "utf8"
+);
 
-// const credentials = { key: privateKey, cert: certificate, ca: ca };
-// const httpsServer = https.createServer(credentials, app);
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+const httpsServer = https.createServer(credentials, app);
 
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger

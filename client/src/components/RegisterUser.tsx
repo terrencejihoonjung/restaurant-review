@@ -21,14 +21,17 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
       validateRegisterInput(username, email, password);
 
       const body = { username, email, password };
-      const response = await fetch("http://localhost:3000/users/register", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        "https://restaurant-review-jihoon.com/users/register",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
       const jsonData = await response.json();
 
       if (response.ok) {
