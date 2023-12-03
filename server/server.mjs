@@ -20,22 +20,6 @@ console.log("GID:", process.getgid()); // Group ID
 dotenv.config();
 const app = express();
 
-const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
-  "utf8"
-);
-const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
-  "utf8"
-);
-const ca = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
-  "utf8"
-);
-
-const credentials = { key: privateKey, cert: certificate, ca: ca };
-const httpsServer = https.createServer(credentials, app);
-
 app.use(express.json()); // built-in body-parser
 app.use(morgan("dev")); // third-party logger
 
@@ -53,7 +37,6 @@ const redisClient = createClient({
   host: "localhost", // Redis server host
   port: 6379, // Redis server port
 });
-
 redisClient.on("error", (err) => {
   console.error("Redis error:", err);
 });
@@ -77,7 +60,23 @@ app.use(
 app.use("/users", users);
 app.use("/restaurants", restaurants);
 
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
+  "utf8"
+);
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
+  "utf8"
+);
+const ca = fs.readFileSync(
+  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
+  "utf8"
+);
+
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+const httpsServer = https.createServer(credentials, app);
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+httpsServer.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
