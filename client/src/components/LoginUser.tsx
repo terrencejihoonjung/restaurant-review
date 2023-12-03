@@ -17,17 +17,14 @@ function LoginUser({ setToastToggle }: LoginProps) {
   async function handleLogin() {
     try {
       const body = { email, password };
-      const response = await fetch(
-        "https://restaurant-review-jihoon.com/users/login",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch("http://localhost:3000/users/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
       const jsonData = await response.json();
 
       if (response.ok) {

@@ -45,6 +45,7 @@ export const login = async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
+      console.log("here1");
       return res.status(401).json({ message: "User does not exist." });
     }
 
@@ -55,6 +56,7 @@ export const login = async (req, res) => {
     );
 
     if (!isPasswordValid) {
+      console.log("here2");
       return res.status(401).json({ message: "Invalid password." });
     }
 
@@ -86,13 +88,14 @@ export const logout = async (req, res) => {
   }
 };
 
-export const checkAuth = async (req, res) => {
+export const isAuthenticated = async (req, res, next) => {
   try {
-    if (!req.session.user) {
-      res.json({ isLoggedIn: false });
-    } else {
-      res.json({ isLoggedIn: true, user: req.session.user });
+    if (req.session && req.session.user) {
+      console.log("authorized");
+      next(); // User is authenticated
     }
+    console.log(req.session);
+    res.status(401).json({ message: "Unauthorized" });
   } catch (err) {
     console.error(err);
   }
@@ -115,28 +118,8 @@ export const getUserReviews = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
-    const { userId } = req.params;
-
-    // Check if user exists
-    const existingUser = await pool.query("SELECT * FROM users WHERE id = $1", [
-      userId,
-    ]);
-
-    if (existingUser.rows.length < 1) {
-      return res.status(400).json({ message: "User not found" });
-    }
-
-    // Grab User Friends
-    const friends = await pool.query(
-      "SELECT username, u.id FROM users u JOIN friends f ON u.id = f.requester_id OR u.id = f.receiver_id WHERE (f.requester_id = $1 OR f.receiver_id = $1) AND f.status = 'accepted' AND u.id != $1 AND f.requester_id < f.receiver_id",
-      [userId]
-    );
-
-    res.json({
-      user: existingUser.rows[0],
-      friends: friends.rows,
-      message: "User Found",
-    });
+    const user = req.session.user;
+    res.json({ user });
   } catch (err) {
     console.error(err);
   }

@@ -3,7 +3,7 @@ import {
   register,
   login,
   logout,
-  checkAuth,
+  isAuthenticated,
   getUserReviews,
   getUser,
   sendRequest,
@@ -17,11 +17,11 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/login", verifyUser, checkAuth);
+router.get("/login", isAuthenticated, getUser);
 router.post("/logout", verifyUser, logout);
 
 router.get("/:userId/reviews", verifyUser, getUserReviews);
-router.get("/:userId", verifyUser, getUser);
+// router.get("/:userId", verifyUser, getUser);
 
 router.post("/friends/request/:userId", verifyUser, sendRequest);
 router.post("/friends/accept/:userId", verifyUser, acceptRequest);

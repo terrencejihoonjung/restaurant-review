@@ -1,8 +1,12 @@
 const verifyUser = (req, res, next) => {
-  if (!req.session.user) {
-    return res.status(400).json({ isLoggedIn: false });
+  if (req.session && req.session.user) {
+    // maxAge is automatically updated with regenerate
+    req.session.regenerate((err) => {
+      if (err) {
+        console.error("Error regenerating session:", err);
+      }
+    });
   }
-  req.session.touch();
   next();
 };
 

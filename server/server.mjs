@@ -13,9 +13,9 @@ import { createClient } from "redis";
 import process from "process";
 
 // Log the user information
-console.log("User:", process.env.USER); // User account name
-console.log("UID:", process.getuid()); // User ID
-console.log("GID:", process.getgid()); // Group ID
+// console.log("User:", process.env.USER); // User account name
+// console.log("UID:", process.getuid()); // User ID
+// console.log("GID:", process.getgid()); // Group ID
 
 dotenv.config();
 const app = express();
@@ -50,33 +50,33 @@ app.use(
     store: redisStore,
     key: "current_user",
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: false,
+    resave: false,
+    saveUninitialized: true,
     credentials: true,
-    cookie: { secure: true, maxAge: 3600000 / 6 }, // Session duration: 1 hour
+    cookie: { httpOnly: true, secure: false, maxAge: 3600000 / 12 }, // Session duration: 5 minutes
   })
 );
 
 app.use("/users", users);
 app.use("/restaurants", restaurants);
 
-const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
-  "utf8"
-);
-const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
-  "utf8"
-);
-const ca = fs.readFileSync(
-  "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
-  "utf8"
-);
+// const certificate = fs.readFileSync(
+//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
+//   "utf8"
+// );
+// const privateKey = fs.readFileSync(
+//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/privkey.pem",
+//   "utf8"
+// );
+// const ca = fs.readFileSync(
+//   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/chain.pem",
+//   "utf8"
+// );
 
-const credentials = { key: privateKey, cert: certificate, ca: ca };
-const httpsServer = https.createServer(credentials, app);
+// const credentials = { key: privateKey, cert: certificate, ca: ca };
+// const httpsServer = https.createServer(credentials, app);
 
 const PORT = process.env.PORT || 3000;
-httpsServer.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
