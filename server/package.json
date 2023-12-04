@@ -5,7 +5,8 @@
   "main": "server.mjs",
   "type": "module",
   "scripts": {
-    "start": "redis-server & nodemon server.mjs"
+    "start": "redis-server & node --env-file=.env server.mjs",
+    "dev": "redis-server & nodemon --env-file=.env server.mjs"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +17,6 @@
     "connect-redis": "^7.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "morgan": "^1.10.0",

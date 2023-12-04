@@ -3,7 +3,6 @@ import {
   register,
   login,
   logout,
-  isAuthenticated,
   getUserReviews,
   getUser,
   sendRequest,

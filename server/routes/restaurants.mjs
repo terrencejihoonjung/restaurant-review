@@ -14,16 +14,17 @@ import verifyUser from "../middleware/authMiddleware.mjs";
 
 const router = express.Router();
 
-router.get("/", verifyUser, getRestaurants);
-router.post("/", verifyUser, addRestaurant);
+router.get("/", verifyUser, getRestaurants); // Get restaurants
+router.get("/:id", verifyUser, getRestaurant); // Get restaurant
 
-router.get("/:id", verifyUser, getRestaurant);
-router.put("/:id", verifyUser, updateRestaurant);
-router.delete("/:id", verifyUser, deleteRestaurant);
+router.post("/", verifyUser, addRestaurant); // Add restaurant
+router.put("/:id", verifyUser, updateRestaurant); // Update restaurant
+router.delete("/:id", verifyUser, deleteRestaurant); // Delete restaurant
 
-router.get("/:id/reviews/:reviewId/likes", getLikes);
-router.post("/:id/reviews", verifyUser, addRestaurantReview);
-router.post("/:id/reviews/:reviewId/like", verifyUser, likeReview);
-router.post("/:id/reviews/:reviewId/dislike", verifyUser, dislikeReview);
+router.get("/:id/reviews/:reviewId/likes", getLikes); // Get reviews' likes
+
+router.post("/:id/reviews", verifyUser, addRestaurantReview); // Add review
+router.post("/:id/reviews/:reviewId/like", verifyUser, likeReview); // Like review
+router.post("/:id/reviews/:reviewId/dislike", verifyUser, dislikeReview); // Dislike review
 
 export default router;

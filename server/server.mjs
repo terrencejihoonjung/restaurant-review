@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-// USER AUTHENTICATION
+// SESSION STORAGE (CACHING)
 const redisClient = createClient({
   host: "localhost", // Redis server host
   port: 6379, // Redis server port
@@ -38,21 +38,29 @@ redisClient.on("error", (err) => {
 const redisStore = new RedisStore({ client: redisClient });
 redisClient.connect().catch(console.error);
 
+// USER SESSION
 app.use(
   session({
     store: redisStore,
     key: "current_user",
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     credentials: true,
-    cookie: { httpOnly: true, secure: false, maxAge: 3600000 / 12 }, // Session duration: 5 minutes
+    cookie: {
+      sameSite: true,
+      httpOnly: true,
+      secure: false,
+      maxAge: 3600000 / 12,
+    }, // Session duration: 5 minutes
   })
 );
 
 // ROUTES
-app.use("/users", users);
-app.use("/restaurants", restaurants);
+const apiRouter = express.Router();
+app.use("/api", apiRouter);
+apiRouter.use("/users", users);
+apiRouter.use("/restaurants", restaurants);
 
 // HTTPS CONFIGURATION
 // const certificate = fs.readFileSync(
