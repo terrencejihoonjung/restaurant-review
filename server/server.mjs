@@ -1,47 +1,40 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
-import restaurants from "./routes/restaurants.mjs";
-import users from "./routes/users.mjs";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import RedisStore from "connect-redis";
-import https from "https";
-import fs from "fs";
+import express from "express"; // Express
+import https from "https"; // HTTPS
+import fs from "fs"; // Path Module
+import morgan from "morgan"; // Logger
+import cors from "cors"; // Cross-Origin Resource Sharing
+import cookieParser from "cookie-parser"; // Parse Cookies from Client
+
+import session from "express-session"; // Sessions/Cookies
+import RedisStore from "connect-redis"; // Session Caching
 import { createClient } from "redis";
-import process from "process";
 
-// Log the user information
-// console.log("User:", process.env.USER); // User account name
-// console.log("UID:", process.getuid()); // User ID
-// console.log("GID:", process.getgid()); // Group ID
+import restaurants from "./routes/restaurants.mjs"; // Restaurant Route
+import users from "./routes/users.mjs"; // User Route
 
-dotenv.config();
-const app = express();
+const app = express(); // Initialize Express App
 
-app.use(express.json()); // built-in body-parser
-app.use(morgan("dev")); // third-party logger
-
-// cross-origin-resource-sharing
+// Built-In/Third-Party Middleware
+app.use(cookieParser());
+app.use(express.json()); // Body-Parser
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: "http://localhost:5173", // Replace with your front-end's URL
     credentials: true,
   })
 );
-app.use(cookieParser()); // Parse incoming cookies from client
 
-// Connect to Redis
+// USER AUTHENTICATION
 const redisClient = createClient({
   host: "localhost", // Redis server host
   port: 6379, // Redis server port
 });
+
 redisClient.on("error", (err) => {
   console.error("Redis error:", err);
 });
 
-// Enable sessions for user auth
 const redisStore = new RedisStore({ client: redisClient });
 redisClient.connect().catch(console.error);
 
@@ -57,9 +50,11 @@ app.use(
   })
 );
 
+// ROUTES
 app.use("/users", users);
 app.use("/restaurants", restaurants);
 
+// HTTPS CONFIGURATION
 // const certificate = fs.readFileSync(
 //   "/etc/letsencrypt/live/restaurant-review-jihoon.com-0002/cert.pem",
 //   "utf8"
@@ -76,6 +71,7 @@ app.use("/restaurants", restaurants);
 // const credentials = { key: privateKey, cert: certificate, ca: ca };
 // const httpsServer = https.createServer(credentials, app);
 
+// Server Listener
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

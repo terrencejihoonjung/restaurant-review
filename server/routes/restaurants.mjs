@@ -10,7 +10,7 @@ import {
   likeReview,
   dislikeReview,
 } from "../controllers/restaurantController.mjs";
-import verifyUser from "../middleware/verifyUser.mjs";
+import verifyUser from "../middleware/authMiddleware.mjs";
 
 const router = express.Router();
 
