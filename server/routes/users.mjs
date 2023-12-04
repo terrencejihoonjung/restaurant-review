@@ -15,17 +15,20 @@ import verifyUser from "../middleware/authMiddleware.mjs";
 
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.get("/login", isAuthenticated, getUser);
-router.post("/logout", verifyUser, logout);
+// Register/Login/Logout
+router.post("/register", register); // Register
+router.post("/login", login); // Login
+router.get("/login", isAuthenticated, getUser); // Login and Obtain User Data
+router.post("/logout", verifyUser, logout); // Logout
+router.get("/:userId", verifyUser, getUser); // Not Sure
 
-router.get("/:userId/reviews", verifyUser, getUserReviews);
-// router.get("/:userId", verifyUser, getUser);
+// User Reviews
+router.get("/:userId/reviews", verifyUser, getUserReviews); // Get User Reviews
 
-router.post("/friends/request/:userId", verifyUser, sendRequest);
-router.post("/friends/accept/:userId", verifyUser, acceptRequest);
-router.delete("/friends/remove/:userId", verifyUser, removeFriend);
-router.get("/friends/:userId", verifyUser, checkFriendStatus);
+// User Friends
+router.post("/friends/request/:userId", verifyUser, sendRequest); // Send Request
+router.post("/friends/accept/:userId", verifyUser, acceptRequest); // Accept Request
+router.delete("/friends/remove/:userId", verifyUser, removeFriend); // Remove Friend
+router.get("/friends/:userId", verifyUser, checkFriendStatus); // Check Friendship
 
 export default router;
