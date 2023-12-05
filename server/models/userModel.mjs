@@ -2,6 +2,24 @@ import pool from "../db/index.mjs";
 import bcrypt from "bcrypt";
 
 class User {
+  async getUserData(id) {
+    try {
+      // Find User in Database
+      const existingUser = await pool.query(
+        "SELECT * FROM users WHERE id = $1",
+        [id]
+      );
+
+      if (existingUser.rows.length === 0) {
+        return res.status(401).json({ message: "User does not exist." });
+      }
+
+      return existingUser.rows[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async registerUser(username, email, password) {
     const client = await pool.connect(); // Opening pool connection since we have multiple queries
     try {

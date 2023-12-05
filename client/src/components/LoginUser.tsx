@@ -17,7 +17,7 @@ function LoginUser({ setToastToggle }: LoginProps) {
   async function handleLogin() {
     try {
       const body = { email, password };
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -25,10 +25,10 @@ function LoginUser({ setToastToggle }: LoginProps) {
         },
         body: JSON.stringify(body),
       });
-      const jsonData = await response.json();
+      const data = await response.json();
 
       if (response.ok) {
-        setUser(jsonData.user);
+        setUser(data.user);
         navigate("/restaurants");
         setToastToggle(true);
         setTimeout(() => {
@@ -36,7 +36,7 @@ function LoginUser({ setToastToggle }: LoginProps) {
           setToastToggle(false);
         }, 3000);
       } else {
-        throw new Error(jsonData.message);
+        throw new Error("Login Failed");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {

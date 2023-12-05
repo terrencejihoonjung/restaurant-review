@@ -33,10 +33,13 @@ function RestaurantDetail() {
 
   async function getRestaurant() {
     try {
-      const response = await fetch(`http://localhost:3000/restaurants/${id}`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/restaurants/${id}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       const jsonData = await response.json();
       setSelectedRestaurant(jsonData.data.restaurant);
       setReviews(jsonData.data.reviews);

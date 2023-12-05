@@ -14,7 +14,7 @@ function ReviewCard({ review }: ReviewProps) {
   async function checkIfUserLiked() {
     try {
       const response = await fetch(
-        `http://localhost:3000/restaurants/${review.restaurant_id}/reviews/${review.id}/likes`,
+        `http://localhost:3000/api/restaurants/${review.restaurant_id}/reviews/${review.id}/likes`,
         {
           credentials: "include",
         }
@@ -39,7 +39,7 @@ function ReviewCard({ review }: ReviewProps) {
     try {
       if (!likeToggle) {
         const response = await fetch(
-          `http://localhost:3000/restaurants/${review.restaurant_id}/reviews/${review.id}/like`,
+          `http://localhost:3000/api/restaurants/${review.restaurant_id}/reviews/${review.id}/like`,
           {
             credentials: "include",
             method: "POST",
@@ -59,7 +59,7 @@ function ReviewCard({ review }: ReviewProps) {
         }
       } else {
         const response = await fetch(
-          `http://localhost:3000/restaurants/${review.restaurant_id}/reviews/${review.id}/dislike`,
+          `http://localhost:3000/api/restaurants/${review.restaurant_id}/reviews/${review.id}/dislike`,
           {
             credentials: "include",
             method: "POST",

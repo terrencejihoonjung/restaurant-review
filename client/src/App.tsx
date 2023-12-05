@@ -21,13 +21,13 @@ function App() {
 
   async function getUser() {
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch("http://localhost:3000/api/users/login", {
         credentials: "include",
       });
-      const jsonData = await response.json();
-      console.log(jsonData);
-      if (jsonData.user) {
-        setUser(jsonData.user);
+      const data = await response.json();
+      console.log(data);
+      if (data.user) {
+        setUser(data.user);
       } else {
         navigate("/users");
       }

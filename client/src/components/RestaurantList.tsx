@@ -51,7 +51,7 @@ function RestaurantList() {
 
   async function getRestaurants() {
     try {
-      const response = await fetch("http://localhost:3000/restaurants", {
+      const response = await fetch("http://localhost:3000/api/restaurants", {
         credentials: "include",
       });
       const jsonData = await response.json();
@@ -75,7 +75,7 @@ function RestaurantList() {
   ) {
     e.stopPropagation();
     try {
-      await fetch(`http://localhost:3000/restaurants/${id}`, {
+      await fetch(`http://localhost:3000/api/restaurants/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

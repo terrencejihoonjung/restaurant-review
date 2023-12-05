@@ -5,6 +5,7 @@ import {
   logout,
   getUserReviews,
   getUser,
+  getProfileUser,
   sendRequest,
   acceptRequest,
   removeFriend,
@@ -17,9 +18,9 @@ const router = express.Router();
 // Register/Login/Logout
 router.post("/register", register); // Register
 router.post("/login", login); // Login
-router.get("/login", isAuthenticated, getUser); // Login and Obtain User Data
+router.get("/login", verifyUser, getUser); // Get User Data
 router.post("/logout", verifyUser, logout); // Logout
-router.get("/:userId", verifyUser, getUser); // Not Sure
+router.get("/:userId", verifyUser, getProfileUser); // Get Profile User Data
 
 // User Reviews
 router.get("/:userId/reviews", verifyUser, getUserReviews); // Get User Reviews

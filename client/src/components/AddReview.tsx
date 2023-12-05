@@ -33,7 +33,7 @@ function AddReview() {
       };
 
       const response = await fetch(
-        `http://localhost:3000/restaurants/${id}/reviews`,
+        `http://localhost:3000/api/restaurants/${id}/reviews`,
         {
           method: "POST",
           credentials: "include",

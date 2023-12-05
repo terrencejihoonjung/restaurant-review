@@ -37,7 +37,7 @@ function Profile() {
   async function checkFriendStatus() {
     try {
       const response = await fetch(
-        `http://localhost:3000/users/friends/${userId}`,
+        `http://localhost:3000/api/users/friends/${userId}`,
         { credentials: "include" }
       );
       const jsonData = await response.json();
@@ -56,7 +56,7 @@ function Profile() {
   async function sendFriendRequest() {
     try {
       const response = await fetch(
-        `http://localhost:3000/users/friends/request/${userId}`,
+        `http://localhost:3000/api/users/friends/request/${userId}`,
         {
           method: "POST",
           credentials: "include",
@@ -74,7 +74,7 @@ function Profile() {
   async function acceptFriendRequest() {
     try {
       const response = await fetch(
-        `http://localhost:3000/users/friends/accept/${userId}`,
+        `http://localhost:3000/api/users/friends/accept/${userId}`,
         { method: "POST", credentials: "include" }
       );
 
@@ -89,7 +89,7 @@ function Profile() {
   async function removeFriend() {
     try {
       const response = await fetch(
-        `http://localhost:3000/users/friends/remove/${userId}`,
+        `http://localhost:3000/api/users/friends/remove/${userId}`,
         { method: "DELETE", credentials: "include" }
       );
 
@@ -101,15 +101,18 @@ function Profile() {
     }
   }
 
-  async function getUser() {
+  async function getProfileUser() {
     try {
-      const response = await fetch(`http://localhost:3000/users/${userId}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/users/${userId}`,
+        {
+          credentials: "include",
+        }
+      );
       if (response.ok) {
-        const jsonData = await response.json();
-        setProfileUser(jsonData.user);
-        setFriends(jsonData.friends);
+        const data = await response.json();
+        setProfileUser(data.user);
+        setFriends(data.friends);
       }
     } catch (err: unknown) {
       console.error(err);
@@ -143,7 +146,7 @@ function Profile() {
   async function getUserReviews() {
     try {
       const response = await fetch(
-        `http://localhost:3000/users/${userId}/reviews`,
+        `http://localhost:3000/api/users/${userId}/reviews`,
         {
           credentials: "include",
         }
@@ -157,7 +160,7 @@ function Profile() {
 
   useEffect(() => {
     checkFriendStatus();
-    getUser();
+    getProfileUser();
     getUserReviews();
   }, [userId]);
 

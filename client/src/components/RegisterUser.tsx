@@ -21,7 +21,7 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
       validateRegisterInput(username, email, password);
 
       const body = { username, email, password };
-      const response = await fetch("http://localhost:3000/users/register", {
+      const response = await fetch("http://localhost:3000/api/users/register", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -29,10 +29,10 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
         },
         body: JSON.stringify(body),
       });
-      const jsonData = await response.json();
+      const data = await response.json();
 
       if (response.ok) {
-        setUser(jsonData.user);
+        setUser(data.user);
         navigate("/restaurants");
         setToastToggle(true);
         setTimeout(() => {
@@ -40,7 +40,7 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
           setToastToggle(false);
         }, 3000);
       } else {
-        throw new Error(jsonData.message);
+        throw new Error("Registration Failed");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {

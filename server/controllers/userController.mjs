@@ -10,6 +10,23 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getProfileUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Don't need to fetch data if profile is current user's
+    if (userId === req.session.user.id) {
+      return res.json({ user: req.session.user });
+    }
+
+    const user = await User.getProfileUser(userId);
+
+    res.json({ user });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const register = async (req, res) => {
   try {
     // Parse user input
