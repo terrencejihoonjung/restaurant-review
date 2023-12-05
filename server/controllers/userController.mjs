@@ -85,7 +85,7 @@ export const sendRequest = async (req, res) => {
     const { userId } = req.params;
 
     // Insert friendship into database as "pending"
-    User.sendFriendRequest(id, userId);
+    await User.sendFriendRequest(id, userId);
 
     // Return response
     res.json({ message: "Friend Request Sent" });
@@ -101,7 +101,7 @@ export const acceptRequest = async (req, res) => {
     const { userId } = req.params;
 
     // Update pending friend request and add the complement friendship to database
-    User.acceptFriendRequest(id, userId);
+    await User.acceptFriendRequest(id, userId);
 
     // Send response
     res.json({ message: "Friend Request Accepted" });
@@ -117,7 +117,7 @@ export const removeFriend = async (req, res) => {
     const { userId } = req.params;
 
     // Delete friendshow rows from database
-    User.removeFriend(id, userId);
+    await User.removeFriend(id, userId);
 
     // Send response
     res.json({ message: "You are no longer friends" });

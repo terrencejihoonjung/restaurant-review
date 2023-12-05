@@ -1,13 +1,13 @@
 import pool from "../db/index.mjs";
+import Restaurant from "../models/restaurantModel.mjs";
 
 export const getRestaurants = async (req, res) => {
   try {
-    const restaurants = await pool.query(
-      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON id = reviews.restaurant_id"
-    );
+    const restaurants = await Restaurant.getRestaurants();
+
     res.json({
-      length: restaurants.rows.length,
-      data: restaurants.rows,
+      length: restaurants.length,
+      data: restaurants,
     });
   } catch (err) {
     console.error(err);
@@ -16,24 +16,13 @@ export const getRestaurants = async (req, res) => {
 
 export const getRestaurant = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Get restaurant
-    const restaurant = await pool.query(
-      "SELECT * FROM restaurants LEFT JOIN (SELECT restaurant_id, COUNT(*) AS review_count, TRUNC(AVG(rating), 1) AS avg_rating FROM reviews GROUP BY restaurant_id) AS reviews ON id = reviews.restaurant_id WHERE id = $1",
-      [id]
-    );
-
-    // Get restaurant reviews
-    const reviews = await pool.query(
-      "SELECT * FROM reviews WHERE restaurant_id = $1",
-      [id]
-    );
+    const { id } = req.session.user;
+    const data = await Restaurant.getRestaurant(id);
 
     res.json({
       data: {
-        restaurant: restaurant.rows[0],
-        reviews: reviews.rows,
+        restaurant: data.restaurant,
+        reviews: data.reviews,
       },
     });
   } catch (err) {
@@ -44,11 +33,14 @@ export const getRestaurant = async (req, res) => {
 export const addRestaurant = async (req, res) => {
   try {
     const { name, location, price_range } = req.body;
-    const restaurant = await pool.query(
-      "INSERT INTO restaurants (name, location, price_range, date) VALUES ($1, $2, $3, $4) RETURNING *",
-      [name, location, price_range, new Date()]
+
+    const restaurant = await Restaurant.addRestaurant(
+      name,
+      location,
+      price_range
     );
-    res.json(restaurant.rows[0]);
+
+    res.json({ restaurant });
   } catch (err) {
     console.error(err);
   }
@@ -56,14 +48,17 @@ export const addRestaurant = async (req, res) => {
 
 export const updateRestaurant = async (req, res) => {
   try {
+    const { id } = req.session.user;
     const { name, location, price_range } = req.body;
-    const { id } = req.params;
 
-    const restaurant = await pool.query(
-      "UPDATE restaurants SET name = $1, location = $2, price_range = $3 WHERE id = $4 RETURNING *",
-      [name, location, price_range, id]
+    const restaurant = await Restaurant.updateRestaurant(
+      id,
+      name,
+      location,
+      price_range
     );
-    res.json(restaurant.rows[0]);
+
+    res.json({ restaurant });
   } catch (err) {
     console.error(err);
   }
@@ -71,13 +66,10 @@ export const updateRestaurant = async (req, res) => {
 
 export const deleteRestaurant = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.session.user;
+    const restaurant = await Restaurant.deleteRestaurant(id);
 
-    const restaurant = await pool.query(
-      "DELETE FROM restaurants WHERE id = $1 RETURNING *",
-      [id]
-    );
-    res.json(restaurant.rows[0]);
+    res.json({ restaurant });
   } catch (err) {
     console.error(err);
   }
@@ -85,13 +77,19 @@ export const deleteRestaurant = async (req, res) => {
 
 export const addRestaurantReview = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.session.user;
     const { name, review, rating, user_id, author } = req.body;
-    const addedReview = await pool.query(
-      "INSERT INTO reviews (restaurant_id, name, review, rating, date, user_id, author) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [id, name, review, rating, new Date(), user_id, author]
+
+    const newReview = await Restaurant.addReview(
+      id,
+      name,
+      review,
+      rating,
+      user_id,
+      author
     );
-    res.json({ review: addedReview.rows[0] });
+
+    res.json({ review: newReview });
   } catch (err) {
     console.error(err);
   }
@@ -102,28 +100,17 @@ export const getLikes = async (req, res) => {
     const { reviewId } = req.params;
     const { id } = req.session.user;
 
-    // Grab all users that liked the review
-    const usersWhoLikedReview = await pool.query(
-      "SELECT users.id, username FROM users JOIN likes ON users.id = likes.user_id JOIN reviews ON likes.review_id = reviews.id WHERE review_id = $1",
-      [reviewId]
-    );
+    const likes = await Restaurant.getReviewLikes(id, reviewId);
 
-    // Check if user + reviewId row exists in likes table
-    const userLike = await pool.query(
-      "SELECT * FROM likes WHERE review_id = $1 AND user_id = $2",
-      [reviewId, id]
-    );
-
-    if (userLike.rows.length < 1) {
+    if (!likes.liked) {
       return res.json({
-        likers: usersWhoLikedReview.rows,
+        likers: likes.likers,
         liked: false,
-        message: "The user did not like this review",
       });
     }
 
     res.json({
-      likers: usersWhoLikedReview.rows,
+      likers: likes.likers,
       liked: true,
       message: "The user liked this review",
     });
@@ -134,32 +121,11 @@ export const getLikes = async (req, res) => {
 
 export const likeReview = async (req, res) => {
   try {
-    const { reviewId } = req.params;
     const { id } = req.session.user;
+    const { reviewId } = req.params;
+    await Restaurant.likeReview(id, reviewId);
 
-    const existingLike = await pool.query(
-      "SELECT * FROM likes WHERE review_id = $1 AND user_id = $2",
-      [reviewId, id]
-    );
-
-    if (existingLike.rows.length > 0) {
-      return res
-        .status(400)
-        .json({ message: "User has already liked this review" });
-    }
-
-    // Add a row to Likes table
-    await pool.query("INSERT INTO likes (review_id, user_id) VALUES ($1, $2)", [
-      reviewId,
-      id,
-    ]);
-
-    // Increment like for this review
-    await pool.query("UPDATE reviews SET likes = likes + 1 WHERE id = $1", [
-      reviewId,
-    ]);
-
-    res.json({ liked: true, message: "Review Liked Successfully" });
+    res.json({ liked: true });
   } catch (err) {
     console.error(err);
   }
@@ -167,32 +133,11 @@ export const likeReview = async (req, res) => {
 
 export const dislikeReview = async (req, res) => {
   try {
-    const { reviewId } = req.params;
     const { id } = req.session.user;
+    const { reviewId } = req.params;
+    await Restaurant.dislikeReview(id, reviewId);
 
-    const existingLike = await pool.query(
-      "SELECT * FROM likes WHERE review_id = $1 AND user_id = $2",
-      [reviewId, id]
-    );
-
-    if (existingLike.rows.length == 0) {
-      return res
-        .status(400)
-        .json({ message: "User has not liked this review" });
-    }
-
-    // Remove like from Likes table
-    await pool.query(
-      "DELETE FROM likes WHERE review_id = $1 AND user_id = $2",
-      [reviewId, id]
-    );
-
-    // Decrement like for this review
-    await pool.query("UPDATE reviews SET likes = likes - 1 WHERE id = $1", [
-      reviewId,
-    ]);
-
-    res.json({ liked: false, message: "Review Disliked Successfully" });
+    res.json({ liked: false });
   } catch (err) {
     console.error(err);
   }
