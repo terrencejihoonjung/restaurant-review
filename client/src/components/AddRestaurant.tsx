@@ -37,9 +37,9 @@ function AddRestaurant() {
         },
         body: JSON.stringify(body),
       });
-      const jsonData = await response.json();
-      console.log(jsonData);
-      setRestaurants([...restaurants, jsonData]);
+      const data = await response.json();
+      console.log(data.restaurant);
+      setRestaurants([...restaurants, data.restaurant]);
       resetFields();
     } catch (err) {
       if (err instanceof Error) {

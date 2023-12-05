@@ -21,17 +21,16 @@ function ReviewCard({ review }: ReviewProps) {
           credentials: "include",
         }
       );
-      const jsonData = await response.json();
+      const data = await response.json();
+      console.log(data.likers);
 
       if (response.ok) {
-        if (jsonData.liked) {
+        if (data.liked) {
           setLikeToggle(true);
         } else {
           setLikeToggle(false);
         }
-        setLikers(jsonData.likers);
-      } else {
-        throw new Error(jsonData.message);
+        setLikers(data.likers);
       }
     } catch (err: unknown) {
       console.error(err);
@@ -48,17 +47,15 @@ function ReviewCard({ review }: ReviewProps) {
             method: "POST",
           }
         );
-        const jsonData = await response.json();
+        const data = await response.json();
 
         if (response.ok) {
-          if (jsonData.liked) {
+          if (data.liked) {
             setLikeToggle(true);
             setCurrentLikeCount((currentLikeCount) => currentLikeCount + 1);
           } else {
             setLikeToggle(false);
           }
-        } else {
-          throw new Error(jsonData.message);
         }
       } else {
         const response = await fetch(
@@ -68,17 +65,15 @@ function ReviewCard({ review }: ReviewProps) {
             method: "POST",
           }
         );
-        const jsonData = await response.json();
+        const data = await response.json();
 
         if (response.ok) {
-          if (jsonData.liked) {
+          if (data.liked) {
             setLikeToggle(true);
           } else {
             setLikeToggle(false);
             setCurrentLikeCount((currentLikeCount) => currentLikeCount - 1);
           }
-        } else {
-          throw new Error(jsonData.message);
         }
       }
     } catch (err: unknown) {

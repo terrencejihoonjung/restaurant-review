@@ -15,13 +15,13 @@ function UpdateRestaurant() {
       const response = await fetch(
         `http://localhost:3000/api/restaurants/${id}`,
         {
-          method: "GET",
+          credentials: "include",
         }
       );
-      const jsonData = await response.json();
-      setName(jsonData.data.restaurant.name);
-      setLocation(jsonData.data.restaurant.location);
-      setPriceRange(jsonData.data.restaurant.price_range);
+      const data = await response.json();
+      setName(data.restaurant.name);
+      setLocation(data.restaurant.location);
+      setPriceRange(data.restaurant.price_range);
     } catch (err: unknown) {
       console.error(err);
     }

@@ -151,8 +151,8 @@ function Profile() {
           credentials: "include",
         }
       );
-      const jsonData = await response.json();
-      setUserReviews(jsonData.userReviews);
+      const data = await response.json();
+      setUserReviews(data.reviews);
     } catch (err: unknown) {
       console.error(err);
     }

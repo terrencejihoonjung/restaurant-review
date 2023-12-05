@@ -15,15 +15,17 @@ export const getProfileUser = async (req, res) => {
     const { userId } = req.params;
 
     // Don't need to fetch data if profile is current user's
-    if (userId === req.session.user.id) {
-      return res.json({ user: req.session.user });
-    }
+    const user =
+      userId === req.session.user.id
+        ? req.session.user
+        : await User.getUserData(userId);
 
-    const user = await User.getProfileUser(userId);
+    const friends = await User.getFriends(userId);
 
-    res.json({ user });
+    res.json({ user, friends });
   } catch (err) {
     console.error(err);
+    res.status(401).json({ message: err });
   }
 };
 
@@ -36,12 +38,13 @@ export const register = async (req, res) => {
     const user = await User.registerUser(username, email, password);
 
     // Store user data in session
-    req.session.user = newUser;
+    req.session.user = user;
 
     // Send response
     res.json({ user });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -53,13 +56,21 @@ export const login = async (req, res) => {
     // Validate and get user from database
     const user = await User.loginUser(email, password);
 
+    req.session.regenerate((err) => {
+      if (err) {
+        console.error("Error regenerating session:", err);
+      }
+    });
+
     // Store user data in session
     req.session.user = user;
+    console.log(req.session.user);
 
     // Send response
     res.json({ user });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: err.message });
   }
 };
 

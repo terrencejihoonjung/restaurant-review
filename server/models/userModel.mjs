@@ -11,10 +11,24 @@ class User {
       );
 
       if (existingUser.rows.length === 0) {
-        return res.status(401).json({ message: "User does not exist." });
+        throw new Error("User does not exist.");
       }
 
       return existingUser.rows[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getFriends(id) {
+    try {
+      // Find User in Database
+      const friends = await pool.query(
+        "SELECT U.id, U.username FROM Users U JOIN friends F ON U.id = F.requester_id OR U.id = F.receiver_id WHERE $1 IN (F.requester_id, F.receiver_id) AND U.id != $1 AND F.status = 'accepted'",
+        [id]
+      );
+
+      return friends.rows;
     } catch (err) {
       throw err;
     }
@@ -29,7 +43,7 @@ class User {
         [email]
       );
       if (existingUser.rows.length > 0)
-        return res.status(400).json({ message: "Email is already in use." });
+        throw new Error("Email is already in use.");
 
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -57,7 +71,7 @@ class User {
       );
 
       if (existingUser.rows.length === 0) {
-        return res.status(401).json({ message: "User does not exist." });
+        throw new Error("User does not exist.");
       }
 
       // Verify Password Input with Hashed Password
@@ -67,7 +81,7 @@ class User {
       );
 
       if (!isPasswordValid) {
-        return res.status(401).json({ message: "Invalid password." });
+        throw new Error("Invalid password.");
       }
 
       return existingUser.rows[0];
@@ -171,4 +185,4 @@ class User {
   }
 }
 
-export default User;
+export default new User();

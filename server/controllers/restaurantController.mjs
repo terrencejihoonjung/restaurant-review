@@ -6,8 +6,7 @@ export const getRestaurants = async (req, res) => {
     const restaurants = await Restaurant.getRestaurants();
 
     res.json({
-      length: restaurants.length,
-      data: restaurants,
+      restaurants,
     });
   } catch (err) {
     console.error(err);
@@ -16,14 +15,12 @@ export const getRestaurants = async (req, res) => {
 
 export const getRestaurant = async (req, res) => {
   try {
-    const { id } = req.session.user;
+    const { id } = req.params;
     const data = await Restaurant.getRestaurant(id);
 
     res.json({
-      data: {
-        restaurant: data.restaurant,
-        reviews: data.reviews,
-      },
+      restaurant: data.restaurant,
+      reviews: data.reviews,
     });
   } catch (err) {
     console.error(err);
@@ -48,7 +45,7 @@ export const addRestaurant = async (req, res) => {
 
 export const updateRestaurant = async (req, res) => {
   try {
-    const { id } = req.session.user;
+    const { id } = req.params;
     const { name, location, price_range } = req.body;
 
     const restaurant = await Restaurant.updateRestaurant(
@@ -66,7 +63,7 @@ export const updateRestaurant = async (req, res) => {
 
 export const deleteRestaurant = async (req, res) => {
   try {
-    const { id } = req.session.user;
+    const { id } = req.params;
     const restaurant = await Restaurant.deleteRestaurant(id);
 
     res.json({ restaurant });
@@ -77,7 +74,7 @@ export const deleteRestaurant = async (req, res) => {
 
 export const addRestaurantReview = async (req, res) => {
   try {
-    const { id } = req.session.user;
+    const { id } = req.params;
     const { name, review, rating, user_id, author } = req.body;
 
     const newReview = await Restaurant.addReview(
@@ -112,7 +109,6 @@ export const getLikes = async (req, res) => {
     res.json({
       likers: likes.likers,
       liked: true,
-      message: "The user liked this review",
     });
   } catch (err) {
     console.error(err);

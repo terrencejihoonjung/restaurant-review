@@ -54,8 +54,8 @@ function RestaurantList() {
       const response = await fetch("http://localhost:3000/api/restaurants", {
         credentials: "include",
       });
-      const jsonData = await response.json();
-      setRestaurants(jsonData.data);
+      const data = await response.json();
+      setRestaurants(data.restaurants);
     } catch (err: unknown) {
       console.error(err);
     }

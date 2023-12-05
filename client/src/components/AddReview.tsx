@@ -43,8 +43,8 @@ function AddReview() {
       );
 
       if (response.ok) {
-        const jsonData = await response.json();
-        setReviews([...reviews, jsonData.review]);
+        const data = await response.json();
+        setReviews([...reviews, data.review]);
         window.location.reload();
       }
     } catch (err) {

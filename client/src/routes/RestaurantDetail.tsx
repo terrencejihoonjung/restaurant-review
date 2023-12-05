@@ -36,13 +36,13 @@ function RestaurantDetail() {
       const response = await fetch(
         `http://localhost:3000/api/restaurants/${id}`,
         {
-          method: "GET",
           credentials: "include",
         }
       );
-      const jsonData = await response.json();
-      setSelectedRestaurant(jsonData.data.restaurant);
-      setReviews(jsonData.data.reviews);
+      const data = await response.json();
+      console.log(data);
+      setSelectedRestaurant(data.restaurant);
+      setReviews(data.reviews);
     } catch (err: unknown) {
       console.error(err);
     }

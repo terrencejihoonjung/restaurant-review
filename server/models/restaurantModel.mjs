@@ -77,12 +77,12 @@ class Restaurant {
 
   async addReview(id, name, review, rating, user_id, author) {
     try {
-      const review = await pool.query(
+      const newReview = await pool.query(
         "INSERT INTO reviews (restaurant_id, name, review, rating, date, user_id, author) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
         [id, name, review, rating, new Date(), user_id, author]
       );
 
-      return review.rows[0];
+      return newReview.rows[0];
     } catch (err) {
       throw err;
     }
@@ -98,14 +98,11 @@ class Restaurant {
       );
 
       // Check if user + reviewId row exists in likes table
-      const userLike = await pool.query(
-        "SELECT * FROM likes WHERE review_id = $1 AND user_id = $2",
-        [reviewId, id]
-      );
+      const userLiked = usersWhoLikedReview.rows.find((user) => user.id === id);
 
       return {
         likers: usersWhoLikedReview.rows,
-        liked: userLike.rows.length < 1,
+        liked: userLiked ? true : false,
       };
     } catch (err) {
       throw err;
@@ -177,4 +174,4 @@ class Restaurant {
   }
 }
 
-export default Restaurant;
+export default new Restaurant();
