@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Restaurant } from "../context/RestaurantsContext";
-import StarRating from "../components/StarRating";
-import AddReview from "../components/AddReview";
-import Reviews from "../components/Reviews";
-import { Review } from "../context/ReviewsContext";
+import { Restaurant } from "../RestaurantList/RestaurantsContext";
+import StarRating from "../../components/ui/StarRating";
+import AddReview from "./AddReview";
+import Reviews from "./Reviews";
+import { Review } from "./ReviewsContext";
 
 function RestaurantDetail() {
   const { id } = useParams();

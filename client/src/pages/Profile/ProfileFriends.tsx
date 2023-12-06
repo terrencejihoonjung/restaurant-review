@@ -1,6 +1,6 @@
-import Avatar from "./Avatar";
+import Avatar from "../../components/ui/Avatar";
 import { useNavigate } from "react-router-dom";
-import { User } from "../context/UsersContext";
+import { User } from "../../context/UsersContext";
 
 type ProfileFriendsProps = {
   friends: User[];

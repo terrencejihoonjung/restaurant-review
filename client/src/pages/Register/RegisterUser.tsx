@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUsersContext } from "../context/UsersContext";
-import validateRegisterInput from "../helpers/validateRegisterInput";
+import { useUsersContext } from "../../context/UsersContext";
+import validateRegisterInput from "../../utils/validateRegisterInput";
 
 type RegisterProps = {
   setToastToggle: (toastToggle: boolean) => void;

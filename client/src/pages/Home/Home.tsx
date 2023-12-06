@@ -1,6 +1,6 @@
-import Header from "../components/Header";
-import AddRestaurant from "../components/AddRestaurant";
-import RestaurantList from "../components/RestaurantList";
+import Header from "../../components/ui/Header";
+import AddRestaurant from "../RestaurantList/AddRestaurant";
+import RestaurantList from "../RestaurantList/RestaurantList";
 
 function Home() {
   return (

@@ -1,17 +1,20 @@
 // Tool Imports
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { RestaurantsContext, Restaurant } from "./context/RestaurantsContext";
+import {
+  RestaurantsContext,
+  Restaurant,
+} from "./pages/RestaurantList/RestaurantsContext";
 import { UsersContext, User } from "./context/UsersContext";
 
 // Component Imports
-import Home from "./routes/Home";
-import NoMatch from "./routes/NoMatch";
-import UserAuth from "./routes/UserAuth";
+import Home from "./pages/Home/Home";
+import NoMatch from "./pages/ErrorBoundary/NoMatch";
+import UserAuth from "./pages/Auth/UserAuth";
 import NavBar from "./components/NavBar";
-import RestaurantDetail from "./routes/RestaurantDetail";
-import UpdateRestaurant from "./routes/UpdateRestaurant";
-import Profile from "./routes/Profile";
+import RestaurantDetail from "./pages/RestaurantDetail/RestaurantDetail";
+import UpdateRestaurant from "./pages/RestaurantList/UpdateRestaurant";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);

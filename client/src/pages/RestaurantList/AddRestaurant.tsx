@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRestaurantsContext } from "../context/RestaurantsContext";
+import { useRestaurantsContext } from "./RestaurantsContext";
 
 function AddRestaurant() {
   const [name, setName] = useState("");

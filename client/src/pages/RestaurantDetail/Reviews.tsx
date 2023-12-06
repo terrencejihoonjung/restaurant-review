@@ -1,5 +1,5 @@
-import { SortedReviewProps } from "../context/ReviewsContext";
-import ReviewCard from "./ReviewCard";
+import { SortedReviewProps } from "./ReviewsContext";
+import ReviewCard from "../../components/ui/ReviewCard";
 
 function Reviews({ sortedReviews }: SortedReviewProps) {
   return (

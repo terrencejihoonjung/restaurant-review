@@ -1,4 +1,4 @@
-import Heart from "./Heart";
+import Heart from "../../components/ui/Heart";
 
 type ProfileStatsProps = {
   userReviewsLength: number;

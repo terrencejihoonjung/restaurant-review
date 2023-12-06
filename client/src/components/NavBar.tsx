@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUsersContext, User } from "../context/UsersContext";
-import Socials from "./Socials";
-import Avatar from "./Avatar";
+import Socials from "./ui/Socials";
+import Avatar from "./ui/Avatar";
 
 type NavBarProps = {
   setToastToggle: (toastToggle: boolean) => void;

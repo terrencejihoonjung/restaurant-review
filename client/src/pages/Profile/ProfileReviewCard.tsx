@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import StarRating from "./StarRating";
-import { Review } from "../context/ReviewsContext";
-import Heart from "./Heart";
+import StarRating from "../../components/ui/StarRating";
+import { Review } from "../RestaurantDetail/ReviewsContext";
+import Heart from "../../components/ui/Heart";
 
 type ReviewProps = {
   review: Review;

@@ -1,10 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useRestaurantsContext,
-  Restaurant,
-} from "../context/RestaurantsContext";
-import StarRating from "./StarRating";
+import { useRestaurantsContext, Restaurant } from "./RestaurantsContext";
+import StarRating from "../../components/ui/StarRating";
 
 function RestaurantList() {
   const { restaurants, setRestaurants } = useRestaurantsContext();

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useReviewsContext, Review } from "../context/ReviewsContext";
-import { useUsersContext } from "../context/UsersContext";
+import { useReviewsContext, Review } from "./ReviewsContext";
+import { useUsersContext } from "../../context/UsersContext";
 
 function AddReview() {
   const { id } = useParams();

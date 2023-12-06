@@ -1,4 +1,4 @@
-import ProfilePicture from "../assets/Profile.jpeg";
+import ProfilePicture from "../../assets/Profile.jpeg";
 
 type AvatarProps = {
   iconStyle: string;

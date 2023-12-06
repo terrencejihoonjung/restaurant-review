@@ -1,4 +1,4 @@
-import { ReviewLiker } from "../context/ReviewsContext";
+import { ReviewLiker } from "../../pages/RestaurantDetail/ReviewsContext";
 import { useNavigate } from "react-router-dom";
 import Avatar from "./Avatar";
 

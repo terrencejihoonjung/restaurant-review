@@ -1,11 +1,11 @@
-import { User, useUsersContext } from "../context/UsersContext";
+import { User, useUsersContext } from "../../context/UsersContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Avatar from "../components/Avatar";
-import ProfileStats from "../components/ProfileStats";
-import ProfileFriends from "../components/ProfileFriends";
-import ProfileReviews from "../components/ProfileReviews";
-import { Review } from "../context/ReviewsContext";
+import Avatar from "../../components/ui/Avatar";
+import ProfileStats from "./ProfileStats";
+import ProfileFriends from "./ProfileFriends";
+import ProfileReviews from "./ProfileReviews";
+import { Review } from "../RestaurantDetail/ReviewsContext";
 
 const iconStyle: string = "w-64 rounded-full";
 

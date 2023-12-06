@@ -1,4 +1,4 @@
-import { Review } from "../context/ReviewsContext";
+import { Review } from "../RestaurantDetail/ReviewsContext";
 import ProfileReviewCard from "./ProfileReviewCard";
 
 type ReviewRefProps = {

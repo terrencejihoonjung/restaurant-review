@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
-import { Review, ReviewLiker } from "../context/ReviewsContext";
+import {
+  Review,
+  ReviewLiker,
+} from "../../pages/RestaurantDetail/ReviewsContext";
 import Heart from "./Heart";
 import LikerRow from "./LikerRow";
 

@@ -1,5 +1,5 @@
-import RegisterUser from "../components/RegisterUser";
-import LoginUser from "../components/LoginUser";
+import RegisterUser from "../Register/RegisterUser";
+import LoginUser from "../Login/LoginUser";
 import { useState } from "react";
 
 type UserProps = {
