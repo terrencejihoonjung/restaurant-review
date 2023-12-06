@@ -24,7 +24,7 @@ class User {
     try {
       // Find User in Database
       const friends = await pool.query(
-        "SELECT U.id, U.username FROM Users U JOIN friends F ON U.id = F.requester_id OR U.id = F.receiver_id WHERE $1 IN (F.requester_id, F.receiver_id) AND U.id != $1 AND F.status = 'accepted'",
+        "SELECT DISTINCT U.id, U.username FROM Users U JOIN friends F ON U.id = F.requester_id OR U.id = F.receiver_id WHERE $1 IN (F.requester_id, F.receiver_id) AND U.id != $1 AND F.status = 'accepted'",
         [id]
       );
 

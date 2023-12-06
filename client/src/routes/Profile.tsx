@@ -1,6 +1,6 @@
 import { User, useUsersContext } from "../context/UsersContext";
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "../components/Avatar";
 import ProfileStats from "../components/ProfileStats";
 import ProfileFriends from "../components/ProfileFriends";
@@ -26,10 +26,6 @@ function Profile() {
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  const profileRef: React.RefObject<HTMLInputElement> = useRef(null);
-  const friendsRef: React.RefObject<HTMLInputElement> = useRef(null);
-  const reviewsRef: React.RefObject<HTMLInputElement> = useRef(null);
-
   const totalLikes = userReviews.reduce((count, review) => {
     return count + review.likes;
   }, 0);
@@ -45,7 +41,6 @@ function Profile() {
         if (jsonData.requester == user.id) setFriendStatus("Pending Request");
         else setFriendStatus("Accept Request");
       } else {
-        console.log(jsonData.status);
         setFriendStatus(jsonData.status);
       }
     } catch (err: unknown) {
@@ -79,6 +74,7 @@ function Profile() {
       );
 
       if (response.ok) {
+        setFriends([...friends, profileUser]);
         setFriendStatus("Friends");
       }
     } catch (err: unknown) {
@@ -94,6 +90,7 @@ function Profile() {
       );
 
       if (response.ok) {
+        setFriends(friends.filter((friend) => friend.id !== user.id));
         setFriendStatus("Add Friend");
       }
     } catch (err: unknown) {
@@ -117,30 +114,6 @@ function Profile() {
     } catch (err: unknown) {
       console.error(err);
     }
-  }
-
-  function handleProfileScroll() {
-    profileRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "center",
-    });
-  }
-
-  function handleFriendsScroll() {
-    friendsRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "center",
-    });
-  }
-
-  function handleReviewsScroll() {
-    reviewsRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "center",
-    });
   }
 
   async function getUserReviews() {
@@ -244,43 +217,15 @@ function Profile() {
               </button>
             ) : null}
           </span>
-
-          <ul className="menu mt-12 w-fit sticky top-48">
-            <li>
-              <button
-                onClick={() => handleProfileScroll()}
-                className="font-inter text-2xl"
-              >
-                Profile
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleFriendsScroll()}
-                className="font-inter text-2xl"
-              >
-                Friends
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleReviewsScroll()}
-                className="font-inter text-2xl"
-              >
-                Reviews
-              </button>
-            </li>
-          </ul>
         </div>
         <div className="w-2/3">
           <ProfileStats
             numFriends={friends.length}
-            profileRef={profileRef}
             userReviewsLength={userReviews.length}
             totalLikes={totalLikes}
           />
-          <ProfileFriends friends={friends} friendsRef={friendsRef} />
-          <ProfileReviews reviewsRef={reviewsRef} reviews={userReviews} />
+          <ProfileFriends friends={friends} />
+          <ProfileReviews reviews={userReviews} />
         </div>
       </div>
     </>
