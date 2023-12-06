@@ -12,11 +12,13 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { setUser } = useUsersContext();
 
   async function handleRegister() {
+    setLoading(true);
     try {
       validateRegisterInput(username, email, password);
 
@@ -44,6 +46,7 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
+        setLoading(false);
         setError(err.message);
       }
     }
@@ -51,10 +54,10 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
 
   return (
     <>
-      <div className="card w-1/4 bg-base-100 shadow-xl">
-        <div className="card-body">
+      <div className="card w-1/4 bg-base-100 shadow-2xl">
+        <div className="card-body space-y-2">
           <h2 className="card-title">Create an Account</h2>
-          <div className="form-control w-full max-w-xs">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Username</span>
             </label>
@@ -62,10 +65,10 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
               type="text"
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
           </div>
-          <div className="form-control w-full max-w-xs">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Email</span>
             </label>
@@ -73,10 +76,10 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
               type="text"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
           </div>
-          <div className="form-control w-full max-w-xs">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
@@ -84,11 +87,11 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
               type="text"
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
           </div>
           {error ? (
-            <div className="alert alert-warning mb-4 w-full">
+            <div className="alert alert-warning w-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="stroke-current shrink-0 h-6 w-6"
@@ -105,9 +108,13 @@ function RegisterUser({ setToastToggle }: RegisterProps) {
               <span>{error}</span>
             </div>
           ) : null}
-          <div className="card-actions justify-start mt-2">
+          <div className="card-actions justify-start">
             <button onClick={() => handleRegister()} className="btn">
-              Register
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Register"
+              )}
             </button>
           </div>
         </div>

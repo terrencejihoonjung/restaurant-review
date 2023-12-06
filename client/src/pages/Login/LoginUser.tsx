@@ -10,11 +10,13 @@ function LoginUser({ setToastToggle }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { setUser } = useUsersContext();
 
   async function handleLogin() {
+    setLoading(true);
     try {
       const body = { email, password };
       const response = await fetch("http://localhost:3000/api/users/login", {
@@ -39,6 +41,7 @@ function LoginUser({ setToastToggle }: LoginProps) {
         throw new Error("Login Failed");
       }
     } catch (err: unknown) {
+      setLoading(false);
       if (err instanceof Error) {
         setError(err.message);
       }
@@ -47,11 +50,11 @@ function LoginUser({ setToastToggle }: LoginProps) {
 
   return (
     <>
-      <div className="card w-1/4 bg-base-100 shadow-xl">
-        <div className="card-body">
+      <div className="card w-1/4 bg-base-100 shadow-2xl">
+        <div className="card-body space-y-2">
           <h2 className="card-title">Login</h2>
 
-          <div className="form-control w-full max-w-xs">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Email</span>
             </label>
@@ -59,10 +62,10 @@ function LoginUser({ setToastToggle }: LoginProps) {
               type="text"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
           </div>
-          <div className="form-control w-full max-w-xs">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
@@ -70,11 +73,11 @@ function LoginUser({ setToastToggle }: LoginProps) {
               type="text"
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
           </div>
           {error ? (
-            <div className="alert alert-warning mb-4 w-full">
+            <div className="alert alert-warning w-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="stroke-current shrink-0 h-6 w-6"
@@ -93,7 +96,11 @@ function LoginUser({ setToastToggle }: LoginProps) {
           ) : null}
           <div className="card-actions justify-start mt-2">
             <button onClick={() => handleLogin()} className="btn">
-              Login
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
         </div>

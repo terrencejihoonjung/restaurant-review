@@ -11,14 +11,14 @@ function User({ setToastToggle }: UserProps) {
 
   return (
     <>
-      <div className="flex flex-col items-center pt-12">
+      <div className="relative h-full flex flex-col justify-center items-center space-y-4 bg-gradient-to-r from-fuchsia-500 to-yelp-red">
         {toggle ? (
           <RegisterUser setToastToggle={setToastToggle} />
         ) : (
           <LoginUser setToastToggle={setToastToggle} />
         )}
         <button
-          className="btn btn-wide mt-4"
+          className="btn btn-outline btn-wide"
           onClick={() => setToggle(!toggle)}
         >
           {toggle ? "Have an account? Login" : "Create an Account"}

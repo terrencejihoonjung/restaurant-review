@@ -34,7 +34,7 @@ function NavBar({ setToastToggle }: NavBarProps) {
   }
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar absolute bg-base-100">
       <div className="flex-1">
         <Link
           to={user.id ? "/restaurants" : "/users"}

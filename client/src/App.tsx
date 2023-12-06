@@ -43,7 +43,7 @@ function App() {
   }, []);
 
   return (
-    <div className="container min-w-full min-h-full">
+    <div className="container h-screen min-w-full min-h-full">
       <UsersContext.Provider value={{ user, setUser }}>
         <NavBar setToastToggle={setToastToggle} />
         <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
