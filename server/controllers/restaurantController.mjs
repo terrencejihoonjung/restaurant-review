@@ -1,4 +1,3 @@
-import pool from "../db/index.mjs";
 import Restaurant from "../models/restaurantModel.mjs";
 
 export const getRestaurants = async (req, res) => {
@@ -94,21 +93,14 @@ export const addRestaurantReview = async (req, res) => {
 
 export const getLikes = async (req, res) => {
   try {
-    const { reviewId } = req.params;
     const { id } = req.session.user;
+    const { reviewId } = req.params;
 
     const likes = await Restaurant.getReviewLikes(id, reviewId);
 
-    if (!likes.liked) {
-      return res.json({
-        likers: likes.likers,
-        liked: false,
-      });
-    }
-
     res.json({
       likers: likes.likers,
-      liked: true,
+      liked: likes.liked,
     });
   } catch (err) {
     console.error(err);

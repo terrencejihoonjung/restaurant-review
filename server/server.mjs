@@ -50,8 +50,8 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 3600000 / 12,
-    }, // Session duration: 5 minutes
+      maxAge: 3600000 / 2,
+    }, // Session duration: 30 minutes
   })
 );
 

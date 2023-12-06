@@ -13,23 +13,23 @@ function RestaurantDetail() {
   );
   const [reviews, setReviews] = useState<Review[]>([] as Review[]);
   const [sortKeyword, setSortKeyword] = useState("recent");
-  const sortedReviews = useMemo(
-    function sortReviews(): Review[] {
-      const copyReviews = [...reviews];
 
-      if (sortKeyword === "recent") {
-        return copyReviews.sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
-      }
+  function sortReviews(): Review[] {
+    const copyReviews = [...reviews];
+
+    if (sortKeyword === "recent") {
       return copyReviews.sort((a, b) => {
-        return sortKeyword === "highest"
-          ? b.rating - a.rating
-          : a.rating - b.rating;
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
       });
-    },
-    [reviews]
-  );
+    }
+    return copyReviews.sort((a, b) => {
+      return sortKeyword === "highest"
+        ? b.rating - a.rating
+        : a.rating - b.rating;
+    });
+  }
+
+  let sortedReviews = useMemo(() => sortReviews(), [reviews]);
 
   async function getRestaurant() {
     try {

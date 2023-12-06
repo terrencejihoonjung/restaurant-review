@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useReviewsContext } from "../context/ReviewsContext";
+import { useReviewsContext, Review } from "../context/ReviewsContext";
 import { useUsersContext } from "../context/UsersContext";
 
 function AddReview() {
   const { id } = useParams();
-  const [name, setName] = useState("");
-  const [rating, setRating] = useState("");
-  const [review, setReview] = useState("");
-  const [error, setError] = useState("");
+  const [name, setName] = useState<string>("");
+  const [rating, setRating] = useState<string>("");
+  const [review, setReview] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const { reviews, setReviews } = useReviewsContext();
   const { user } = useUsersContext();

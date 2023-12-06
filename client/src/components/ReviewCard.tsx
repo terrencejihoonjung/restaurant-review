@@ -13,7 +13,7 @@ function ReviewCard({ review }: ReviewProps) {
   const [currentLikeCount, setCurrentLikeCount] = useState(review.likes);
   const [likers, setLikers] = useState<ReviewLiker[]>([]);
 
-  async function checkIfUserLiked() {
+  async function getLikes() {
     try {
       const response = await fetch(
         `http://localhost:3000/api/restaurants/${review.restaurant_id}/reviews/${review.id}/likes`,
@@ -21,10 +21,10 @@ function ReviewCard({ review }: ReviewProps) {
           credentials: "include",
         }
       );
-      const data = await response.json();
-      console.log(data.likers);
 
       if (response.ok) {
+        const data = await response.json();
+        console.log(data);
         if (data.liked) {
           setLikeToggle(true);
         } else {
@@ -39,6 +39,7 @@ function ReviewCard({ review }: ReviewProps) {
 
   async function handleLike() {
     try {
+      // Like
       if (!likeToggle) {
         const response = await fetch(
           `http://localhost:3000/api/restaurants/${review.restaurant_id}/reviews/${review.id}/like`,
@@ -57,7 +58,10 @@ function ReviewCard({ review }: ReviewProps) {
             setLikeToggle(false);
           }
         }
-      } else {
+      }
+
+      // Dislike
+      else {
         const response = await fetch(
           `http://localhost:3000/api/restaurants/${review.restaurant_id}/reviews/${review.id}/dislike`,
           {
@@ -82,7 +86,7 @@ function ReviewCard({ review }: ReviewProps) {
   }
 
   useEffect(() => {
-    checkIfUserLiked();
+    getLikes();
   }, [currentLikeCount]);
 
   return (
@@ -107,7 +111,7 @@ function ReviewCard({ review }: ReviewProps) {
               <a
                 onClick={() => {
                   const modal = document.getElementById(
-                    "my_modal_2"
+                    `${"modal_" + review.id}`
                   ) as HTMLDialogElement;
                   if (modal) modal.showModal();
                 }}
@@ -120,7 +124,7 @@ function ReviewCard({ review }: ReviewProps) {
         </div>
       </div>
 
-      <dialog id="my_modal_2" className="modal">
+      <dialog id={"modal_" + review.id} className="modal">
         <div className="modal-box">
           <div className="overflow-x-auto">
             <h3 className="font-bold text-lg">Likes</h3>
