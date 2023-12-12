@@ -55,7 +55,7 @@ function UpdateRestaurant() {
 
   return (
     <>
-      <div className="flex flex-col items-center pt-12">
+      <div className="flex flex-col items-center pt-36">
         <h1 className="mb-9 font-inter font-black text-4xl bg-gradient-to-r from-fuchsia-500 to-yelp-red text-transparent bg-clip-text text-center">
           Update Restaurant
         </h1>

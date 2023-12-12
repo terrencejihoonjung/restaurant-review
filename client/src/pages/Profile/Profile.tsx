@@ -138,14 +138,14 @@ function Profile() {
   }, [userId]);
 
   return (
-    <>
+    <div className="pt-24">
       <button
         onClick={() => navigate(-1)}
-        className="px-24 font-inter font-black text-sm breadcrumbs"
+        className="pl-24 font-inter font-black text-sm breadcrumbs"
       >
         {"< Back"}
       </button>
-      <div className="flex px-24 py-8 text-2xl">
+      <div className="flex px-10 py-8 text-2xl">
         <div className="flex flex-col items-center w-1/3">
           <Avatar iconStyle={iconStyle} />
           <h1 className="my-4 text-3xl font-inter font-black">
@@ -228,7 +228,7 @@ function Profile() {
           <ProfileReviews reviews={userReviews} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

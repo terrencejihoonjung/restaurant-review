@@ -9,7 +9,7 @@ const Reviews = ({ reviews }: ReviewRefProps) => {
   return (
     <div className="mt-32">
       <h1 className="card-title mb-4 ml-4">My Reviews</h1>
-      <div className="grid grid-cols-3 justify-items-center gap-4 mb-64 overflow-y-auto max-h-screen">
+      <div className="grid grid-cols-3 justify-items-center gap-4 mb-64 overflow-y-auto min-h-screen">
         {reviews.map((review) => (
           <ProfileReviewCard review={review} key={review.id} />
         ))}

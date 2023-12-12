@@ -18,13 +18,13 @@ import Profile from "./pages/Profile/Profile";
 import Root from "./components/Root.tsx";
 
 function App() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>({} as User);
   const [toastToggle, setToastToggle] = useState(false);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<Root user={user} setToastToggle={setToastToggle} />}>
-        {user ? (
+        {user.id ? (
           <>
             <Route index element={<Home />} />
             <Route path="/restaurants" element={<Home />} />
@@ -41,7 +41,7 @@ function App() {
             element={<UserAuth setToastToggle={setToastToggle} />}
           />
         )}
-        <Route path="*" element={<NoMatch />} />
+        <Route path="*" element={<NoMatch user={user} />} />
       </Route>
     )
   );
@@ -55,7 +55,7 @@ function App() {
       if (data.user) {
         setUser(data.user);
       } else {
-        setUser(null);
+        setUser({} as User);
       }
     } catch (err: unknown) {
       console.error(err);

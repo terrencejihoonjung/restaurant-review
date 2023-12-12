@@ -4,7 +4,7 @@ export type User = {
   id: number;
   username: string;
   email: string;
-} | null;
+};
 
 export type UserProps = {
   user: User;
@@ -12,7 +12,7 @@ export type UserProps = {
 };
 
 export const UsersContext = createContext<UserProps>({
-  user: null,
+  user: {} as User,
   setUser: () => {},
 });
 

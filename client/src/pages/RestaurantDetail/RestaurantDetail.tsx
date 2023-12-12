@@ -53,7 +53,7 @@ function RestaurantDetail() {
   }, []);
 
   return (
-    <>
+    <div className="pt-24">
       <Link
         to="/restaurants"
         className="px-24 font-inter font-black text-sm breadcrumbs"
@@ -91,7 +91,7 @@ function RestaurantDetail() {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

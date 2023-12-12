@@ -89,7 +89,7 @@ function ReviewCard({ review }: ReviewProps) {
 
   return (
     <>
-      <div className="card w-72 h-64 bg-base-100 shadow-xl">
+      <div className="card w-84 h-64 bg-base-100 shadow-xl">
         <div className="card-body">
           <span className="flex items-center justify-between">
             <h2 className="card-title">{review.name}</h2>
