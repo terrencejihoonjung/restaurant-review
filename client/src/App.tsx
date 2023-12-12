@@ -76,7 +76,7 @@ function App() {
         <div className="toast">
           <div className="alert alert-success">
             <span>
-              {user ? "Successfully Logged In" : "Successfully Logged Out"}
+              {user.id ? "Successfully Logged In" : "Successfully Logged Out"}
             </span>
           </div>
         </div>

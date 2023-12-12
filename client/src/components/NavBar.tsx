@@ -20,7 +20,7 @@ function NavBar({ setToastToggle }: NavBarProps) {
         credentials: "include",
       });
       if (response.ok) {
-        setUser(null);
+        setUser({} as User);
         navigate("/users");
         setToastToggle(true);
         setTimeout(() => {
