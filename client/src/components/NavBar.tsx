@@ -20,7 +20,7 @@ function NavBar({ setToastToggle }: NavBarProps) {
         credentials: "include",
       });
       if (response.ok) {
-        setUser({} as User);
+        setUser(null);
         navigate("/users");
         setToastToggle(true);
         setTimeout(() => {
@@ -34,19 +34,19 @@ function NavBar({ setToastToggle }: NavBarProps) {
   }
 
   return (
-    <div className="navbar absolute bg-base-100">
+    <div className="navbar relative bg-base-100">
       <div className="flex-1">
         <Link
-          to={user.id ? "/restaurants" : "/users"}
+          to={user ? "/restaurants" : "/users"}
           className="btn btn-ghost normal-case text-xl bg-gradient-to-r from-fuchsia-500 to-yelp-red text-transparent bg-clip-text"
         >
           RR
         </Link>
-        {user.id ? <p>Logged in as: {user.username}</p> : null}
+        {user ? <p>Logged in as: {user.username}</p> : null}
       </div>
 
       <div className="flex items-center">
-        {user.id ? (
+        {user ? (
           <>
             {/* <Notifications /> */}
             <Link to={`/profile/${user.id}`} className="flex items-center mx-2">

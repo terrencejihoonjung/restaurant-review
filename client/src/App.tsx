@@ -1,26 +1,50 @@
-// Tool Imports
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import {
-  RestaurantsContext,
-  Restaurant,
-} from "./pages/RestaurantList/RestaurantsContext";
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import { UsersContext, User } from "./context/UsersContext";
 
 // Component Imports
 import Home from "./pages/Home/Home";
 import NoMatch from "./pages/ErrorBoundary/NoMatch";
 import UserAuth from "./pages/Auth/UserAuth";
-import NavBar from "./components/NavBar";
 import RestaurantDetail from "./pages/RestaurantDetail/RestaurantDetail";
 import UpdateRestaurant from "./pages/RestaurantList/UpdateRestaurant";
 import Profile from "./pages/Profile/Profile";
+import Root from "./components/Root.tsx";
 
 function App() {
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [user, setUser] = useState<User>({} as User);
+  const [user, setUser] = useState<User | null>(null);
   const [toastToggle, setToastToggle] = useState(false);
-  const navigate = useNavigate();
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<Root user={user} setToastToggle={setToastToggle} />}>
+        {user ? (
+          <>
+            <Route index element={<Home />} />
+            <Route path="/restaurants" element={<Home />} />
+            <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+            <Route
+              path="/restaurants/:id/update"
+              element={<UpdateRestaurant />}
+            />
+            <Route path="/profile/:userId" element={<Profile />} />
+          </>
+        ) : (
+          <Route
+            path="/users"
+            element={<UserAuth setToastToggle={setToastToggle} />}
+          />
+        )}
+        <Route path="*" element={<NoMatch />} />
+      </Route>
+    )
+  );
 
   async function getUser() {
     try {
@@ -31,7 +55,7 @@ function App() {
       if (data.user) {
         setUser(data.user);
       } else {
-        navigate("/users");
+        setUser(null);
       }
     } catch (err: unknown) {
       console.error(err);
@@ -43,37 +67,16 @@ function App() {
   }, []);
 
   return (
-    <div className="container h-screen min-w-full min-h-full">
+    <div className="inset-0 min-h-screen min-w-screen">
       <UsersContext.Provider value={{ user, setUser }}>
-        <NavBar setToastToggle={setToastToggle} />
-        <RestaurantsContext.Provider value={{ restaurants, setRestaurants }}>
-          <Routes>
-            {user.id ? (
-              <>
-                <Route index element={<Home />} />
-                <Route path="/restaurants" element={<Home />} />
-                <Route path="/restaurants/:id" element={<RestaurantDetail />} />
-                <Route
-                  path="/restaurants/:id/update"
-                  element={<UpdateRestaurant />}
-                />
-                <Route path="/profile/:userId" element={<Profile />} />
-              </>
-            ) : (
-              <Route
-                path="/users"
-                element={<UserAuth setToastToggle={setToastToggle} />}
-              />
-            )}
-            <Route path="*" element={<NoMatch />} />
-          </Routes>
-        </RestaurantsContext.Provider>
+        <RouterProvider router={router} />
       </UsersContext.Provider>
+
       {toastToggle ? (
         <div className="toast">
           <div className="alert alert-success">
             <span>
-              {user.id ? "Successfully Logged In" : "Successfully Logged Out"}
+              {user ? "Successfully Logged In" : "Successfully Logged Out"}
             </span>
           </div>
         </div>
