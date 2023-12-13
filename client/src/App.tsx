@@ -16,6 +16,7 @@ import RestaurantDetail from "./pages/RestaurantDetail/RestaurantDetail";
 import UpdateRestaurant from "./pages/RestaurantList/UpdateRestaurant";
 import Profile from "./pages/Profile/Profile";
 import Root from "./components/Root.tsx";
+import Cover from "./pages/Cover/Cover.tsx";
 
 function App() {
   const [user, setUser] = useState<User>({} as User);
@@ -23,7 +24,7 @@ function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<Root user={user} setToastToggle={setToastToggle} />}>
+      <Route element={<Root setToastToggle={setToastToggle} />}>
         {user.id ? (
           <>
             <Route index element={<Home />} />
@@ -36,10 +37,13 @@ function App() {
             <Route path="/profile/:userId" element={<Profile />} />
           </>
         ) : (
-          <Route
-            path="/users"
-            element={<UserAuth setToastToggle={setToastToggle} />}
-          />
+          <>
+            <Route index element={<Cover />} />
+            <Route
+              path="/login"
+              element={<UserAuth setToastToggle={setToastToggle} />}
+            />
+          </>
         )}
         <Route path="*" element={<NoMatch user={user} />} />
       </Route>

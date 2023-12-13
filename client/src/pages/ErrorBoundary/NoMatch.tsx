@@ -17,7 +17,7 @@ function NoMatch({ user }: NoMatchProps) {
       <span className="space-y-2 flex flex-col justify-center items-center font-inter text-white rounded-full relative">
         <p className="text-2xl">404 Not Found</p>
         <Link
-          to={user.id ? "/restaurants" : "/users"}
+          to={"/"}
           className="text-md btn px-4 py-2 hover:bg-black hover:text-white hover:border-none"
         >
           Reload Page

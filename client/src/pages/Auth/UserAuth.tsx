@@ -11,7 +11,7 @@ function User({ setToastToggle }: UserProps) {
 
   return (
     <>
-      <div className="relative min-h-screen min-w-screen flex flex-col justify-center items-center space-y-4 bg-gradient-to-r from-fuchsia-500 to-yelp-red">
+      <div className="min-h-screen min-w-screen flex flex-col justify-center items-center space-y-4 bg-gradient-to-r from-fuchsia-500 to-yelp-red">
         {toggle ? (
           <RegisterUser setToastToggle={setToastToggle} />
         ) : (
