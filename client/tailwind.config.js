@@ -13,6 +13,9 @@ export default {
         108: "22rem",
         152: "38rem",
       },
+      fontSize: {
+        title: "10rem",
+      },
     },
   },
   daisyui: {
