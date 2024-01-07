@@ -68,13 +68,6 @@ npm install
 
 <br/>
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Features + Examples
-
-<br/>
-
 <!-- ROADMAP -->
 ## Roadmap (Restaurant Review now, Margo later)
 
@@ -106,7 +99,7 @@ LinkedIn - [Terrence Jung](https://www.linkedin.com/in/terrencejung/)
 <!-- ACKNOWLEDGMENTS -->
 ## Resources
 
-* []()
+* [Yelp Fusion API](https://fusion.yelp.com/)
 
 <!-- REFLECTION -->
 ## Reflection
