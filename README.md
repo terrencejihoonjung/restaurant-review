@@ -29,9 +29,9 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <!-- <li><a href="#roadmap">Roadmap</a></li> -->
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <!--<li><a href="#acknowledgments">Acknowledgments</a></li>-->
   </ol>
 </details>
 
@@ -68,8 +68,8 @@ npm install
 
 <br/>
 
-<!-- ROADMAP -->
-## Roadmap (Restaurant Review now, Margo later)
+<!-- ROADMAP 
+## Roadmap (Stretch Goals)
 
 - [ ] Aesthetic grid layout of place cards
 - [ ] Category filters
@@ -85,7 +85,7 @@ npm install
 - [ ] Location preferences
 
 <br/>
-
+-->
 <!-- CONTACT -->
 ## Contact
 Email - terrencejung928@gmail.com
@@ -101,10 +101,10 @@ LinkedIn - [Terrence Jung](https://www.linkedin.com/in/terrencejung/)
 
 * [Yelp Fusion API](https://fusion.yelp.com/)
 
-<!-- REFLECTION -->
+<!-- REFLECTION
 ## Reflection
 
-Creating this project truly strengthened my understanding of full stack development using React.js with Express.js. I believe that this project will set the foundation for an even stronger foundation in full stack development later on. Although this app's functionality was mostly completed, I want to further refactor/upgrade this project into a bookmarking, social media app that has features similar to Pinterest. The reason for this transition is because I want to provide a more usable application to a wider audience. I personally also think that it would be nice to have a designated platform where I can store all of my food/drink recommendations around the world rather than having to do a deep search within my google maps bookmarks. I would call this app "Margo", short for "Mark and go" :)
+Creating this project truly strengthened my understanding of full stack development using React.js with Express.js. I believe that this project will set the foundation for an even stronger foundation in full stack development later on. Although this app's functionality was mostly completed, I want to further refactor/upgrade this project into a bookmarking, social media app that has features similar to Pinterest. The reason for this transition is because I want to provide a more usable application to a wider audience. I personally also think that it would be nice to have a designated platform where I can store all of my food/drink recommendations around the world rather than having to do a deep search within my google maps bookmarks. I would call this app "Margo", short for "Mark and go" :) -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
