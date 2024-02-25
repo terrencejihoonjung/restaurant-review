@@ -99,7 +99,7 @@ LinkedIn - [Terrence Jung](https://www.linkedin.com/in/terrencejung/)
 <!-- ACKNOWLEDGMENTS -->
 ## Resources
 
-* [Yelp Fusion API](https://fusion.yelp.com/)
+<!--* [Yelp Fusion API](https://fusion.yelp.com/)-->
 
 <!-- REFLECTION
 ## Reflection
